@@ -1,20 +1,23 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-midas2021-dev-231137-authRole",
-      "UnauthRoleArn": "arn:aws:iam::284884261677:role/amplify-midas2021-dev-231137-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::284884261677:role/amplify-midas2021-dev-231137-authRole",
-      "Region": "ap-southeast-1",
-      "DeploymentBucketName": "amplify-midas2021-dev-231137-deployment",
-      "UnauthRoleName": "amplify-midas2021-dev-231137-unauthRole",
-      "StackName": "amplify-midas2021-dev-231137",
-      "StackId": "arn:aws:cloudformation:ap-southeast-1:284884261677:stack/amplify-midas2021-dev-231137/6ef98410-fab6-11eb-92a4-020215af40e8",
-      "AmplifyAppId": "drwtd79hcm8h"
-    },
-    "categories": {
-      "auth": {
-        "midas20214521f85f": {}
-      }
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-midasfrontend-dev-214137-authRole",
+            "UnauthRoleArn": "arn:aws:iam::284884261677:role/amplify-midasfrontend-dev-214137-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::284884261677:role/amplify-midasfrontend-dev-214137-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "amplify-midasfrontend-dev-214137-deployment",
+            "UnauthRoleName": "amplify-midasfrontend-dev-214137-unauthRole",
+            "StackName": "amplify-midasfrontend-dev-214137",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:284884261677:stack/amplify-midasfrontend-dev-214137/06abb820-fb73-11eb-9d09-066a9d5115f0",
+            "AmplifyAppId": "d218ecus5t61t5"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d218ecus5t61t5",
+                    "type": "cicd"
+                }
+            }
+        }
     }
-  }
 }
