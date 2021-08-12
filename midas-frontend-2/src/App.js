@@ -1,42 +1,49 @@
-import logo from './logo.svg';
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import Amplify, { Auth } from 'aws-amplify';
+import React, { useState, useEffect } from 'react';
+import Login from "./views/examples/Login";
+import { BrowserRouter, Redirect, Route, Router, Switch } from "react-router-dom";
 import './App.css';
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "./assets/plugins/nucleo/css/nucleo.css";
 import "./assets/scss/argon-dashboard-react.scss";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-
-
+import awsconfig from './aws-exports';
 import AdminLayout from "./layouts/Admin.js";
 import AuthLayout from "./layouts/Auth.js";
 
+Amplify.configure(awsconfig);
+
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const assessLoggedInState = () => {
+    Auth.currentAuthenticatedUser()
+      .then(sess => {
+        console.log('logged in');
+        setLoggedIn(true);
+      }).catch(() => {
+        console.log('not logged in');
+        setLoggedIn(false);
+      });
+  }
+
+  useEffect(() => {
+    assessLoggedInState();
+  }, [])
+
   return (
+    // TODO: Fix Login Logic
+    // <Router>
+    //   <Route exact path="/">
+    //     <Login onSignIn={assessLoggedInState} />
+    //   </Route>
+    // </Router>
     <BrowserRouter>
       <Switch>
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-        <Redirect from="/" to="/admin/index" />
+        {loggedIn ? <Redirect from="/" to="/admin/index" /> : <Redirect from="/" to="/auth/login" />}
       </Switch>
     </BrowserRouter>
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
   );
 }
 

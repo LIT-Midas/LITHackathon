@@ -31,8 +31,25 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import Amplify, { Auth } from 'aws-amplify';
+import React, { useState } from "react";
+import { BrowserRouter, Redirect, Route, Switch, useHistory } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ onSignIn }) => {
+  const history = useHistory();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const signIn = async () => {
+    try {
+      const user = await Auth.signIn(username, password);
+      history.push('/');
+      onSignIn();
+    } catch (error) {
+      console.error('error signing in:', error);
+    }
+  }
+
   return (
     <>
       <Col lg="5" md="7">
@@ -94,6 +111,10 @@ const Login = () => {
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
                   />
                 </InputGroup>
               </FormGroup>
@@ -108,6 +129,10 @@ const Login = () => {
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                   />
                 </InputGroup>
               </FormGroup>
@@ -125,7 +150,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
+                <Button className="my-4" color="primary" type="button" onClick={signIn}>
                   Sign in
                 </Button>
               </div>
