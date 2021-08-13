@@ -351,3 +351,4 @@ MigrationBackup/
 
 .DS_Store
 package-lock.json
+midas-frontend-2/package-lock.json
