@@ -1,6 +1,6 @@
   
 {
-  "AWSEBDockerrunVersion": 3,
+  "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
       "name": "node",
