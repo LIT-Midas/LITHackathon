@@ -7,7 +7,7 @@
     }
   },
   "auth": {
-    "midasreactapp2e2d426eb": {
+    "midasreactapp2e124a7f6": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -17,7 +17,8 @@
           "EMAIL"
         ],
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "NAME"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,

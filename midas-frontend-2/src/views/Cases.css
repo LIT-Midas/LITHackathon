@@ -1,0 +1,15 @@
+.title {
+  text-align: start!important;
+  color: whitesmoke;
+}
+
+.add-case {
+  text-align: center!important;
+}
+
+.MuiCard-root{
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
