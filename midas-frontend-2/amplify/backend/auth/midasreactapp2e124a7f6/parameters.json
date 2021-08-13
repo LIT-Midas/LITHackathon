@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "midasreactapp2e2d426eb_identitypool_e2d426eb",
+    "identityPoolName": "midasreactapp2e124a7f6_identitypool_e124a7f6",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "midasre2d426eb",
-    "userPoolName": "midasreactapp2e2d426eb_userpool_e2d426eb",
+    "resourceNameTruncated": "midasre124a7f6",
+    "userPoolName": "midasreactapp2e124a7f6_userpool_e124a7f6",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -18,7 +18,8 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+        "email",
+        "name"
     ],
     "aliasAttributes": [
         "email"
@@ -31,10 +32,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "midasre2d426eb_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "midasre124a7f6_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "e2d426eb",
-    "resourceName": "midasreactapp2e2d426eb",
+    "sharedId": "e124a7f6",
+    "resourceName": "midasreactapp2e124a7f6",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -49,8 +50,14 @@
         ]
     },
     "useDefault": "default",
+    "triggers": "{}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "breakCircularDependency": true,
+    "permissions": [],
     "dependsOn": []
 }

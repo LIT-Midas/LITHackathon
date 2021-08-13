@@ -15,20 +15,20 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import React, { useContext } from "react";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 // reactstrap components
-import { Container, Row, Col } from "reactstrap";
-
+import { Col, Container, Row } from "reactstrap";
 // core components
 import AuthNavbar from "../components/Navbars/AuthNavbar.js";
-import AuthFooter from "../components/Footers/AuthFooter.js";
-
 import routes from "../routes";
+import { AccountContext } from "../services/account.js";
 
-const Auth = (props) => {
+
+const Home = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
+  const { username } = useContext(AccountContext);
 
   React.useEffect(() => {
     document.body.classList.add("bg-default");
@@ -36,7 +36,7 @@ const Auth = (props) => {
       document.body.classList.remove("bg-default");
     };
   }, []);
-  
+
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -45,7 +45,7 @@ const Auth = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/auth") {
+      if (prop.layout === "/home") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -63,48 +63,29 @@ const Auth = (props) => {
     <>
       <div className="main-content" ref={mainContent}>
         <AuthNavbar />
-        <div className="header bg-gradient-info pt-7 pb-4 pt-lg-8 pb-lg-5">
+        <div className="header bg-gradient-info pt-4 pb-2">
           <Container>
             <div className="header-body text-center mb-1">
               <Row className="justify-content-center">
-                <Col lg="5" md="6">
-                  <h1 className="text-white">Welcome to Midas!</h1>
-                  <p className="text-lead text-light">
-                    Your personal AI assistant for case management
-                  </p>
+                <Col lg="7" md="8">
+                  <h1 className="text-white">Welcome back, {username ?? 'Unknown'}!</h1>
                 </Col>
               </Row>
             </div>
           </Container>
-          <div className="separator separator-bottom separator-skew zindex-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              preserveAspectRatio="none"
-              version="1.1"
-              viewBox="0 0 2560 100"
-              x="0"
-              y="0"
-            >
-              <polygon
-                className="fill-default"
-                points="2560 0 2560 100 0 100"
-              />
-            </svg>
-          </div>
         </div>
         {/* Page content */}
         <Container className="pb-5">
           <Row className="justify-content-center">
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="*" to="/auth/login" />
+              <Redirect from="*" to="/home/cases" />
             </Switch>
           </Row>
         </Container>
       </div>
-      <AuthFooter />
     </>
   );
 };
 
-export default Auth;
+export default Home;
