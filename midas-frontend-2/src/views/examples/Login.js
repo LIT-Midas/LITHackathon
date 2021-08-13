@@ -35,16 +35,18 @@ import Amplify, { Auth } from 'aws-amplify';
 import React, { useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch, useHistory } from "react-router-dom";
 
-const Login = ({ onSignIn }) => {
+const Login = (props) => {
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const signIn = async () => {
     try {
+      console.log(username);
+      console.log(password);
       const user = await Auth.signIn(username, password);
       history.push('/');
-      onSignIn();
+      props.onSignIn();
     } catch (error) {
       console.error('error signing in:', error);
     }

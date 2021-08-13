@@ -41,7 +41,8 @@ function App() {
       <Switch>
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-        {loggedIn ? <Redirect from="/" to="/admin/index" /> : <Redirect from="/" to="/auth/login" />}
+        <Redirect from="/" to="/admin/index" />
+        {/* {loggedIn ? <Redirect from="/" to="/admin/index" /> : <Redirect from="/" to="/auth/login" render={(props) => <Login onSignIn={this.assessLoggedInState} />} />} */}
       </Switch>
     </BrowserRouter>
   );
