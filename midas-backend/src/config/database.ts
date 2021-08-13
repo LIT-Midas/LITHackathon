@@ -1,14 +1,15 @@
-module.exports = {
-  HOST: process.env.POSTGRESQL_DB_HOST,
-  USER: process.env.POSTGRESQL_DB_USER,
-  PASSWORD: process.env.POSTGRESQL_DB_PASSWORD,
-  DB: process.env.POSTGRESQL_DB,
-  dialect: "postgres",
-  // declaring pool is optional
-  // pool: {
-  //   max: 5,
-  //   min: 0,
-  //   acquire: 30000,
-  //   idle: 10000
-  // }
+import { ConnectionOptions } from "typeorm";
+import {User, Claim, Task, Client} from '../models'
+
+const config: ConnectionOptions = {
+  type: "postgres",
+  host: process.env.POSTGRES_HOST || "localhost",
+  port: Number(process.env.POSTGRES_PORT) || 5432,
+  username: process.env.POSTGRES_USER || "postgres",
+  password: process.env.POSTGRES_PASSWORD || "postgres",
+  database: process.env.POSTGRES_DB || "postgres",
+  entities: [User, Claim, Task, Client],
+  synchronize: true,
 };
+
+export default config;
