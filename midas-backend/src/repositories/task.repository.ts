@@ -22,11 +22,11 @@ export const getClaimTasks  = async (id: number) :Promise<Array<Task>> => {
 export const createTask  = async (payload: ITaskPayload) :Promise<Task> => {
   const taskRepository = getRepository(Task);
   const task = new Task()
-  if (payload.type && payload.type === "case_created_admin") {
+  if (payload.type && payload.type === "admin_file_soc_wos") {
     const deadlineDate = new Date(payload.start_date)
     deadlineDate.setDate(deadlineDate.getDate() + 8);
     task.deadline_date = deadlineDate
-  } else if (payload.type && payload.type === "case_created_opposing") {
+  } else if (payload.type && payload.type === "opposing_file_moa") {
     const deadlineDate = new Date(payload.start_date)
     deadlineDate.setDate(deadlineDate.getDate() + 14);
     task.deadline_date = deadlineDate

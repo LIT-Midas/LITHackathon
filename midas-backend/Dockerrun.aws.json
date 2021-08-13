@@ -1,0 +1,18 @@
+  
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "node",
+      "image": "javierwhj/midas:latest",
+      "essential": true,
+      "memory": 250,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8000
+        }
+      ]
+    }
+  ]
+}
