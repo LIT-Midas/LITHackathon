@@ -1,7 +1,7 @@
 import { Get, Route, Tags,  Post, Body, Path, Delete, UploadedFiles, Request } from "tsoa";
 import { DeleteResult } from "typeorm";
 import {Document} from '../models'
-import { getDocuments, IDocumentPayload, createDocument, getDocument, getClaimDocuments, updateDocument, deleteDocument } from "../repositories/document.repository";
+import { getDocuments, IDocumentPayload, createDocument, getDocument, getClaimDocuments, updateDocument, deleteDocument, downloadDocument, updateDocumentFormData, IS3Payload, createS3Document, generateDocumentPresignedUrl } from "../repositories/document.repository";
 
 @Route("documents")
 @Tags("Document")
@@ -30,6 +30,31 @@ export default class DocumentController {
   public async getClaimDocuments(@Path() id: string): Promise<Document[] | null> {
     return getClaimDocuments(Number(id))
   }
+
+  @Get("/download/:id")
+  public async downloadDocument(@Path() id: string): Promise<any | null> {
+    return downloadDocument(Number(id))
+  }
+
+  @Get("/presignedUrl/:id")
+  public async generateDocumentPresignedUrl(@Path() id: string): Promise<any | null> {
+    return generateDocumentPresignedUrl(Number(id))
+  }
+
+  // @Get("/multiPresigned")
+  // public async generateMultiplePresignedUrl(@Path() id: string): Promise<any | null> {
+  //   return generateMultiplePresignedUrl(Number(id))
+  // }
+
+  @Post("/bootstrap")
+  public async createS3Document(@Body() body: IS3Payload): Promise<any | null> {
+    return createS3Document(body)
+  }
+
+  // @Post("/bootstrap")
+  // public async updateDocumentFormData(@Body() body: IS3Payload): Promise<any | null> {
+  //   return updateDocumentFormData(body)
+  // }
 
   @Delete("/:id")
   public async deleteDocument(@Path() id: string): Promise<DeleteResult | null> {

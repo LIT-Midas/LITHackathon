@@ -1,7 +1,8 @@
 import { Get, Route, Tags,  Post, Body, Path, Delete } from "tsoa";
 import { DeleteResult } from "typeorm";
-import {Receiver} from '../models'
-import {getReceivers, createReceiver, IReceiverPayload, getReceiver, updateReceiver, deleteReceiver, IReceiverVerifyPayload, verifyReceiver} from '../repositories/receiver.repository'
+import { Receiver } from '../models'
+import password from 'secure-random-password';
+import {getReceivers, createReceiver, IReceiverPayload, getReceiver, updateReceiver, deleteReceiver, IReceiverVerifyPayload, verifyReceiver, getReceiversByClaim} from '../repositories/receiver.repository'
 
 @Route("receivers")
 @Tags("Receiver")
@@ -13,12 +14,18 @@ export default class ReceiverController {
 
   @Post("/")
   public async createReceiver(@Body() body: IReceiverPayload): Promise<Receiver> {
-    return createReceiver(body)
+    const pass_code = password.randomPassword({ length: 4, characters: password.digits })
+    return createReceiver(body, pass_code)
   }
 
   @Get("/:id")
   public async getReceiver(@Path() id: string): Promise<Receiver | null> {
     return getReceiver(Number(id))
+  }
+
+  @Get("/claim/:id")
+  public async getReceiversByClaim(@Path() id: string): Promise<Receiver[] | null> {
+    return getReceiversByClaim(Number(id))
   }
 
   @Post("/:id")
@@ -27,7 +34,7 @@ export default class ReceiverController {
   }
 
   @Post("/verify")
-  public async verifyReceiver(@Body() body: IReceiverVerifyPayload): Promise<boolean> {
+  public async verifyReceiver(@Body() body: IReceiverVerifyPayload): Promise<Receiver | null> {
     return verifyReceiver(body.email, body.access_code)
   }
 

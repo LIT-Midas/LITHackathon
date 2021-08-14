@@ -54,6 +54,26 @@ router.get("/claim/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.get("/download/:id", async (req, res) => {
+  const controller = new DocumentController();
+  const response = await controller.downloadDocument(req.params.id);
+  if (!response) res.status(404).send({message: "No document found"})
+  return res.send(response);
+});
+
+router.get("/presignedUrl/:id", async (req, res) => {
+  const controller = new DocumentController();
+  const response = await controller.generateDocumentPresignedUrl(req.params.id);
+  if (!response) res.status(404).send({ message: "No document found" })
+  return res.send(response);
+});
+
+router.post("/bootstrap", async (req, res) => {
+  const controller = new DocumentController();
+  const response = await controller.createS3Document(req.body);
+  return res.send({message: "S3 Bootstrapped!"})
+});
+
 router.post("/:id", async (req, res) => {
   const controller = new DocumentController();
   const response = await controller.updateDocument(req.params.id, req.body);

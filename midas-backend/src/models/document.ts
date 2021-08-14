@@ -35,6 +35,12 @@ export class Document {
       type: 'text',
       nullable: true,
     })
+    uploader_name!: string;
+  
+    @Column({
+      type: 'text',
+      nullable: true,
+    })
     upload_url!: string;
 
     @Column({ nullable: true })

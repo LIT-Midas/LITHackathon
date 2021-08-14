@@ -22,6 +22,13 @@ router.get("/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.get("/claim/:id", async (req, res) => {
+  const controller = new ReceiverController();
+  const response = await controller.getReceiversByClaim(req.params.id);
+  if (!response) res.status(404).send({message: "No receiver found"})
+  return res.send(response);
+});
+
 router.post("/:id", async (req, res) => {
   const controller = new ReceiverController();
   const response = await controller.updateReceiver(req.params.id, req.body);

@@ -5,7 +5,6 @@ export interface IReceiverPayload {
   name: string;
   email: string;
   claim_id: number;
-  access_code: string;
 }
 
 export interface IReceiverVerifyPayload {
@@ -18,12 +17,13 @@ export const getReceivers  = async () :Promise<Array<Receiver>> => {
   return receiverRepository.find()
 }
 
-export const createReceiver = async (payload: IReceiverPayload): Promise<Receiver> => {
+export const createReceiver = async (payload: IReceiverPayload, pass_code: string): Promise<Receiver> => {
   const receiverRepository = getRepository(Receiver);
   const receiver = new Receiver()
   return receiverRepository.save({
     ...receiver,
-    ...payload
+    ...payload,
+    access_code: pass_code
   })
 }
 
@@ -50,9 +50,16 @@ export const deleteReceiver  = async (id: number) :Promise<DeleteResult | null> 
   return receiverRepository.delete(id);
 }
 
-export const verifyReceiver  = async (email: string, access_code: string) :Promise<boolean> => {
+export const verifyReceiver  = async (email: string, access_code: string) :Promise<Receiver | null> => {
   const receiverRepository = getRepository(Receiver);
   const receiver = await receiverRepository.findOne({ where: { email: email, access_code: access_code }})
-  if (!receiver) return false
-  return true
+  if (!receiver) return null
+  return receiver
+}
+
+export const getReceiversByClaim = async (id: number): Promise<Receiver[] | null> => {
+  const receiverRepository = getRepository(Receiver);
+  const receivers = await receiverRepository.find({ where: { claim_id: id }})
+  if (!receivers) return null
+  return receivers
 }

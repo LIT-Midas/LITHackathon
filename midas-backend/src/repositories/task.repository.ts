@@ -28,6 +28,13 @@ export const createTask  = async (payload: ITaskPayload) :Promise<Task> => {
     const deadlineDate = new Date(payload.start_date)
     deadlineDate.setDate(deadlineDate.getDate() + 8);
     task.deadline_date = deadlineDate
+    const autoTask = taskRepository.create({
+      name: "Opposing Counsel to File Memorandum of Appearance",
+      claim_id: payload.claim_id,
+      start_date: deadlineDate,
+      type: "opposing_counsel_filed_memorandum_of_appearance",
+    });
+    await taskRepository.save(autoTask);
   } else if (payload.type && payload.type === "opposing_counsel_filed_memorandum_of_appearance") {
     const deadlineDate = new Date(payload.start_date)
     deadlineDate.setDate(deadlineDate.getDate() + 14);

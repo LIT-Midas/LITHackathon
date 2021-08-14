@@ -47,32 +47,6 @@ export const createClaim  = async (payload: IClaimPayload) :Promise<Claim> => {
     start_date: payload.start_date,
     completed_date: payload.start_date
   });
-  const msg = {
-    from: 'darren.chia.2018@smu.edu.sg',
-    templateId: 'd-7c2e2c212b9b4a92912fe43ffcd7440c',
-    personalizations: [
-      {
-        to: [
-          {
-            email: payload.client_email
-          }
-        ],
-        dynamic_template_data: {
-          client: payload.client_name,
-          url: "http://hello.com",
-          access_code: pass_code
-        }
-      }
-    ]
-  }
-  sendGridMail
-    .send(msg)
-    .then(() => {
-      console.log('Email sent')
-    })
-    .catch((error: any) => {
-      console.error(error)
-    })
   await taskRepository.save(task);
   await clientRepository.save(client);
   newClaim.client_id = client.id
