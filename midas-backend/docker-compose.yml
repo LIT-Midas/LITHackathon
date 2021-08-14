@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_DB=midasapi-ts
+      - POSTGRES_DB=midasdb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=db
+      - POSTGRES_HOST=midasdb.cdgyl7tolpdd.us-east-2.rds.amazonaws.com

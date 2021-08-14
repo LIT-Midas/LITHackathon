@@ -18,53 +18,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Post": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"title": {
-						"type": "string"
-					},
-					"content": {
-						"type": "string"
-					},
-					"userId": {
-						"type": "number",
-						"format": "double"
-					},
-					"user": {
-						"$ref": "#/components/schemas/User"
-					},
-					"comments": {
-						"items": {
-							"$ref": "#/components/schemas/Comment"
-						},
-						"type": "array"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"title",
-					"content",
-					"userId",
-					"user",
-					"comments",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"User": {
 				"properties": {
 					"id": {
@@ -77,23 +30,17 @@
 					"email": {
 						"type": "string"
 					},
-					"posts": {
+					"claims": {
 						"items": {
-							"$ref": "#/components/schemas/Post"
+							"$ref": "#/components/schemas/Claim"
 						},
 						"type": "array"
 					},
-					"comments": {
-						"items": {
-							"$ref": "#/components/schemas/Comment"
-						},
-						"type": "array"
-					},
-					"createdAt": {
+					"created_at": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"updatedAt": {
+					"updated_at": {
 						"type": "string",
 						"format": "date-time"
 					}
@@ -102,65 +49,184 @@
 					"id",
 					"name",
 					"email",
-					"posts",
-					"comments",
-					"createdAt",
-					"updatedAt"
+					"claims",
+					"created_at",
+					"updated_at"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Comment": {
+			"Claim": {
 				"properties": {
 					"id": {
 						"type": "number",
 						"format": "double"
 					},
-					"content": {
+					"name": {
 						"type": "string"
 					},
-					"userId": {
+					"description": {
+						"type": "string"
+					},
+					"contact_number": {
+						"type": "string"
+					},
+					"user_id": {
 						"type": "number",
 						"format": "double"
 					},
 					"user": {
 						"$ref": "#/components/schemas/User"
 					},
-					"postId": {
+					"client_id": {
 						"type": "number",
 						"format": "double"
 					},
-					"post": {
-						"$ref": "#/components/schemas/Post"
+					"client": {
+						"$ref": "#/components/schemas/Client"
 					},
-					"createdAt": {
+					"tasks": {
+						"items": {
+							"$ref": "#/components/schemas/Task"
+						},
+						"type": "array"
+					},
+					"start_date": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"updatedAt": {
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
 						"type": "string",
 						"format": "date-time"
 					}
 				},
 				"required": [
 					"id",
-					"content",
-					"userId",
+					"name",
+					"description",
+					"contact_number",
+					"user_id",
 					"user",
-					"postId",
-					"post",
-					"createdAt",
-					"updatedAt"
+					"client_id",
+					"client",
+					"tasks",
+					"start_date",
+					"created_at",
+					"updated_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Client": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"access_code": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"claim": {
+						"$ref": "#/components/schemas/Claim"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email",
+					"access_code",
+					"claim_id",
+					"claim",
+					"created_at",
+					"updated_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Task": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"claim": {
+						"$ref": "#/components/schemas/Claim"
+					},
+					"start_date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"completed_date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deadline_date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"details": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"claim_id",
+					"claim",
+					"start_date",
+					"completed_date",
+					"deadline_date",
+					"details",
+					"type",
+					"created_at",
+					"updated_at"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
 			"IUserPayload": {
 				"properties": {
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
+					"name": {
 						"type": "string"
 					},
 					"email": {
@@ -168,31 +234,120 @@
 					}
 				},
 				"required": [
-					"firstName",
-					"lastName",
+					"name",
 					"email"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ICommentPayload": {
+			"IClaimPayload": {
 				"properties": {
-					"content": {
+					"name": {
 						"type": "string"
 					},
-					"userId": {
+					"user_id": {
 						"type": "number",
 						"format": "double"
 					},
-					"postId": {
-						"type": "number",
-						"format": "double"
+					"client_name": {
+						"type": "string"
+					},
+					"client_email": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"contact_number": {
+						"type": "string"
+					},
+					"start_date": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
-					"content",
-					"userId",
-					"postId"
+					"name",
+					"user_id",
+					"client_name",
+					"client_email",
+					"description",
+					"contact_number",
+					"start_date"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteResult": {
+				"description": "Result object returned by DeleteQueryBuilder execution.",
+				"properties": {
+					"raw": {
+						"description": "Raw SQL result returned by executed query."
+					},
+					"affected": {
+						"type": "number",
+						"format": "double",
+						"nullable": true,
+						"description": "Number of affected rows/documents\nNot all drivers support this"
+					}
+				},
+				"required": [
+					"raw"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITaskPayload": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"details": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"start_date": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"name",
+					"claim_id",
+					"details",
+					"type",
+					"start_date"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IClientPayload": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"access_code": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"claim_id",
+					"access_code"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -227,67 +382,6 @@
 				},
 				"security": [],
 				"parameters": []
-			}
-		},
-		"/posts": {
-			"get": {
-				"operationId": "GetPosts",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Post"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Post"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/posts/{id}": {
-			"get": {
-				"operationId": "GetPost",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/Post"
-										}
-									],
-									"nullable": true
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Post"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/users": {
@@ -381,9 +475,9 @@
 				]
 			}
 		},
-		"/comments": {
+		"/claims": {
 			"get": {
-				"operationId": "GetComments",
+				"operationId": "GetClaims",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -391,7 +485,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/Comment"
+										"$ref": "#/components/schemas/Claim"
 									},
 									"type": "array"
 								}
@@ -400,27 +494,27 @@
 					}
 				},
 				"tags": [
-					"Comment"
+					"Claim"
 				],
 				"security": [],
 				"parameters": []
 			},
 			"post": {
-				"operationId": "CreateComment",
+				"operationId": "CreateClaim",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Comment"
+									"$ref": "#/components/schemas/Claim"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Comment"
+					"Claim"
 				],
 				"security": [],
 				"parameters": [],
@@ -429,16 +523,55 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ICommentPayload"
+								"$ref": "#/components/schemas/IClaimPayload"
 							}
 						}
 					}
 				}
 			}
 		},
-		"/comments/{id}": {
+		"/claims/{id}": {
+			"post": {
+				"operationId": "UpdateClaim",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Claim"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Claim"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IClaimPayload"
+							}
+						}
+					}
+				}
+			},
 			"get": {
-				"operationId": "GetComment",
+				"operationId": "GetClaim",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -447,7 +580,7 @@
 								"schema": {
 									"allOf": [
 										{
-											"$ref": "#/components/schemas/Comment"
+											"$ref": "#/components/schemas/Claim"
 										}
 									],
 									"nullable": true
@@ -457,7 +590,439 @@
 					}
 				},
 				"tags": [
-					"Comment"
+					"Claim"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteClaim",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/DeleteResult"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Claim"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/claims/user/{id}": {
+			"get": {
+				"operationId": "GetUserClaims",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Claim"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Claim"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/tasks": {
+			"get": {
+				"operationId": "GetTasks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Task"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Task"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateTask",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Task"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Task"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ITaskPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tasks/{id}": {
+			"post": {
+				"operationId": "UpdateTask",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Task"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Task"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ITaskPayload"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetTask",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Task"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Task"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteTask",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/DeleteResult"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Task"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/tasks/claim/{id}": {
+			"get": {
+				"operationId": "GetClaimTasks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Task"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Task"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/clients": {
+			"get": {
+				"operationId": "GetClients",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Client"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Client"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Client"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Client"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IClientPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/clients/{id}": {
+			"get": {
+				"operationId": "GetClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Client"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Client"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "UpdateClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Client"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Client"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IClientPayload"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/DeleteResult"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Client"
 				],
 				"security": [],
 				"parameters": [
