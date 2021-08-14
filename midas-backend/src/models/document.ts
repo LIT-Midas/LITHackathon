@@ -17,27 +17,24 @@ export class Document {
     @ManyToOne(_type => Claim, (claim: Claim) => claim.tasks, { eager: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: "claim_id" })
     claim!: Claim;
-
-    @Column({ type: 'date' })
-    start_date!: Date;
-    
-    @Column({ type: 'date', nullable: true })
-    completed_date!: Date;
-
-    @Column({ type: 'date', nullable: true })
-    deadline_date!: Date;
-
+  
     @Column({
-        type: 'json',
-        nullable: true
+      type: 'text',
+      nullable: true
     })
-    tags!: object;
+    description!: string;
 
     @Column({
         type: 'text',
         nullable: true
     })
     type!: string;
+  
+    @Column({
+      type: 'json',
+      nullable: true
+    })
+    tags!: object;
 
     @CreateDateColumn()
     created_at!: Date;

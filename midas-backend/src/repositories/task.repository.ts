@@ -16,17 +16,19 @@ export const getTasks  = async () :Promise<Array<Task>> => {
 
 export const getClaimTasks  = async (id: number) :Promise<Array<Task>> => {
   const taskRepository = getRepository(Task);
-  return taskRepository.find({ where: { claim_id: id } })
+  return taskRepository.find({ where: { claim_id: id }, order: {
+      start_date: "ASC",
+  }})
 }
 
 export const createTask  = async (payload: ITaskPayload) :Promise<Task> => {
   const taskRepository = getRepository(Task);
   const task = new Task()
-  if (payload.type && payload.type === "admin_file_soc_wos") {
+  if (payload.type && payload.type === "counsel_filed_writ_of_summons_and_statement_of_claims") {
     const deadlineDate = new Date(payload.start_date)
     deadlineDate.setDate(deadlineDate.getDate() + 8);
     task.deadline_date = deadlineDate
-  } else if (payload.type && payload.type === "opposing_file_moa") {
+  } else if (payload.type && payload.type === "opposing_counsel_filed_memorandum_of_appearance") {
     const deadlineDate = new Date(payload.start_date)
     deadlineDate.setDate(deadlineDate.getDate() + 14);
     task.deadline_date = deadlineDate
