@@ -5,7 +5,7 @@ import {getReceivers, createReceiver, IReceiverPayload, getReceiver, updateRecei
 
 @Route("receivers")
 @Tags("Receiver")
-export default class UserController {
+export default class ReceiverController {
   @Get("/")
   public async getReceivers(): Promise<Array<Receiver>> {
     return getReceivers()

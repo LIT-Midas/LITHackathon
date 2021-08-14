@@ -36,6 +36,12 @@
 						},
 						"type": "array"
 					},
+					"documents": {
+						"items": {
+							"$ref": "#/components/schemas/Document"
+						},
+						"type": "array"
+					},
 					"created_at": {
 						"type": "string",
 						"format": "date-time"
@@ -50,6 +56,7 @@
 					"name",
 					"email",
 					"claims",
+					"documents",
 					"created_at",
 					"updated_at"
 				],
@@ -85,6 +92,12 @@
 					"client": {
 						"$ref": "#/components/schemas/Client"
 					},
+					"receivers": {
+						"items": {
+							"$ref": "#/components/schemas/Receiver"
+						},
+						"type": "array"
+					},
 					"tasks": {
 						"items": {
 							"$ref": "#/components/schemas/Task"
@@ -113,6 +126,7 @@
 					"user",
 					"client_id",
 					"client",
+					"receivers",
 					"tasks",
 					"start_date",
 					"created_at",
@@ -120,6 +134,11 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"IRecordOfAny": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {}
 			},
 			"Client": {
 				"properties": {
@@ -143,6 +162,12 @@
 					"claim": {
 						"$ref": "#/components/schemas/Claim"
 					},
+					"documents": {
+						"items": {
+							"$ref": "#/components/schemas/Document"
+						},
+						"type": "array"
+					},
 					"created_at": {
 						"type": "string",
 						"format": "date-time"
@@ -159,6 +184,155 @@
 					"access_code",
 					"claim_id",
 					"claim",
+					"documents",
+					"created_at",
+					"updated_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Document": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"upload_url": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"claim": {
+						"$ref": "#/components/schemas/Claim"
+					},
+					"type": {
+						"type": "string"
+					},
+					"job_id": {
+						"type": "string"
+					},
+					"form_data": {
+						"items": {
+							"$ref": "#/components/schemas/IRecordOfAny"
+						},
+						"type": "array"
+					},
+					"raw": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"upload_person_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"upload_person": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/User"
+							},
+							{
+								"$ref": "#/components/schemas/Client"
+							}
+						]
+					},
+					"persona": {
+						"type": "string"
+					},
+					"shared_with": {
+						"items": {
+							"$ref": "#/components/schemas/Receiver"
+						},
+						"type": "array"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"title",
+					"status",
+					"upload_url",
+					"claim_id",
+					"claim",
+					"type",
+					"job_id",
+					"form_data",
+					"raw",
+					"upload_person_id",
+					"upload_person",
+					"persona",
+					"shared_with",
+					"created_at",
+					"updated_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Receiver": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"access_code": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"claim": {
+						"$ref": "#/components/schemas/Claim"
+					},
+					"documents": {
+						"items": {
+							"$ref": "#/components/schemas/Document"
+						},
+						"type": "array"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email",
+					"access_code",
+					"claim_id",
+					"claim",
+					"documents",
 					"created_at",
 					"updated_at"
 				],
@@ -347,6 +521,85 @@
 					"name",
 					"email",
 					"claim_id",
+					"access_code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IClientVerifyPayload": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"access_code": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"access_code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IDocumentPayload": {
+				"properties": {
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"upload_person_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"persona": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"claim_id",
+					"upload_person_id",
+					"persona"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IReceiverPayload": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"access_code": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"claim_id",
+					"access_code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IReceiverVerifyPayload": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"access_code": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
 					"access_code"
 				],
 				"type": "object",
@@ -874,6 +1127,56 @@
 				]
 			}
 		},
+		"/tasks/complete/{id}": {
+			"post": {
+				"operationId": "CompleteTask",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Task"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Task"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"completed_date": {
+										"type": "string",
+										"format": "date-time"
+									}
+								},
+								"required": [
+									"completed_date"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/tasks/claim/{id}": {
 			"get": {
 				"operationId": "GetClaimTasks",
@@ -1071,6 +1374,427 @@
 						}
 					}
 				]
+			}
+		},
+		"/clients/verify": {
+			"post": {
+				"operationId": "VerifyClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Client"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IClientVerifyPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/documents": {
+			"get": {
+				"operationId": "GetDocuments",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Document"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateDocument",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"enum": [
+										null
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/documents/{id}": {
+			"post": {
+				"operationId": "UpdateDocument",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Document"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IDocumentPayload"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetDocument",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Document"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteDocument",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/DeleteResult"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/documents/claim/{id}": {
+			"get": {
+				"operationId": "GetClaimDocuments",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Document"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/receivers": {
+			"get": {
+				"operationId": "GetReceivers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Receiver"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Receiver"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateReceiver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Receiver"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Receiver"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IReceiverPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/receivers/{id}": {
+			"get": {
+				"operationId": "GetReceiver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Receiver"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Receiver"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "UpdateReceiver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Receiver"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Receiver"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IReceiverPayload"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteReceiver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/DeleteResult"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Receiver"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/receivers/verify": {
+			"post": {
+				"operationId": "VerifyReceiver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Receiver"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IReceiverVerifyPayload"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

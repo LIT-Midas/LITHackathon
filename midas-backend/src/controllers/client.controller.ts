@@ -5,7 +5,7 @@ import {getClients, createClient, IClientPayload, getClient, updateClient, delet
 
 @Route("clients")
 @Tags("Client")
-export default class UserController {
+export default class ClientController {
   @Get("/")
   public async getClients(): Promise<Array<Client>> {
     return getClients()
