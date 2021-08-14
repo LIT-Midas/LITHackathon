@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 // node.js library that concatenates classes (strings)
 import classnames from 'classnames';
 // javascipt plugin for creating charts
@@ -29,10 +29,12 @@ import { chartOptions, parseOptions, chartExample1, chartExample2 } from '../var
 import Header from '../components/Headers/Header.js';
 
 import MidasTimeline from '../components/Timeline/Timeline';
+import { CaseContext } from '../services/case.js';
 
 const Timeline = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState('data1');
+  const { caseName } = useContext(CaseContext);
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -55,7 +57,7 @@ const Timeline = (props) => {
                 <Row className='align-items-center'>
                   <div className='col'>
                     <h6 className='text-uppercase text-light ls-1 mb-1'>Overview</h6>
-                    <h2 className='text-white mb-0'>Case Timeline</h2>
+                    <h2 className='text-white mb-0'>{caseName + ' Timeline' ?? 'Case Timeline'}</h2>
                   </div>
                 </Row>
               </CardHeader>

@@ -1,29 +1,25 @@
-import 'date-fns';
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import PersonIcon from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
-import { blue } from '@material-ui/core/colors';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { createEvent } from '@testing-library/react';
-import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import DateFnsUtils from '@date-io/date-fns';
+import { TextareaAutosize } from '@material-ui/core';
+import { blue } from '@material-ui/core/colors';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import axios from 'axios';
+import 'date-fns';
+import PropTypes from 'prop-types';
+import React, { useContext, useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { CaseContext } from '../../services/case';
+import './EventDialog.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 const useAStyles = makeStyles({
@@ -35,116 +31,177 @@ const useAStyles = makeStyles({
 
 export default function EventDialog(props) {
   const classes = useAStyles();
-  const { onClose, selectedValue, open } = props;
+  const { onClose, selectedValue, open, fetchEvents, setLoading } = props;
+  const { selectedCase } = useContext(CaseContext);
   const [eventOwner, setEventOwner] = useState(null);
   const [eventType, setEventType] = useState(null);
   const [eventName, setEventName] = useState(null);
+  const [eventDetails, setEventDetails] = useState(null);
   const [eventDate, setEventDate] = useState(new Date());
-  const eventMapping = {
-    
+  const eventTypeMapping = {
+    "Filed Writ of Summons": "filed_writ_of_summons",
+    "Filed Statement of Claims": "filed_statement_of_claims",
+    "Filed Writ of Summons and Statement of Claims": "filed_writ_of_summons_and_statement_of_claims",
+    "Filed Memorandum of Appearance": "filed_memorandum_of_appearance",
+    "Defence reply": "defence_reply",
+    "Defence to counterclaim": "defence_to_counterclaim",
+    "Discovery stage": "discovery_stage",
+    "Custom": "custom",
+  }
+  const eventPersonaMapping = {
+    "Counsel": "counsel",
+    "Opposing Counsel": "opposing_counsel",
   }
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
+  const notify = () => toast("Event has successfully been created!");
 
-  const createEvent = () => {
-    alert(eventOwner);
-    alert(eventType);
-    alert(eventName);
-    alert(eventDate);
+  const createEvent = async () => {
+    const type = eventOwner + '_' + eventTypeMapping[eventType];
+    const data = {
+      "name": eventName,
+      "claim_id": selectedCase,
+      "details": eventDetails,
+      "type": type,
+      "start_date": eventDate,
+    }
+    await axios.post('https://26b8cf35526e.ngrok.io/tasks', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then((response) => {
+      notify()
+      setLoading(true);
+      fetchEvents();
+      setEventOwner(null);
+      setEventType(null);
+      setEventName(null);
+      setEventDetails(null);
+      setEventDate(new Date());
+      handleClose();
+    }).catch((error) => {
+      console.error('Error creating task: ' + error);
+    })
   };
 
   return (
-    <Dialog onClose={handleClose} aria-labelledby='simple-dialog-title' open={open}>
-      <DialogTitle id='simple-dialog-title'>Add New Event</DialogTitle>
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
-          <Typography variant='h6'>Assigned To</Typography>
-        </Grid>
-        <Grid item xs={8}>
-          <FormControl className={classes.formControl}>
-            <Select
-              id='event-owner'
-              value={eventOwner}
-              onChange={(event) => {
-                setEventOwner(event.target.value);
-              }}>
-              <MenuItem value='counsel'>Counsel</MenuItem>
-              <MenuItem value='opposing-counsel'>Opposing Counsel</MenuItem>
-              <MenuItem value='client'>Client</MenuItem>
-            </Select>
-            <FormHelperText>Who should be carrying out the action</FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid item xs={4}>
-          <Typography variant='h6'>Event Type</Typography>
-        </Grid>
-        <Grid item xs={8}>
-          <FormControl className={classes.formControl}>
-            <Select
-              id='event-type'
-              value={eventType}
-              onChange={(event) => {
-                setEventType(event.target.value);
-              }}>
-              <MenuItem value='counsel'>Counsel</MenuItem>
-              <MenuItem value='opposing-counsel'>Opposing Counsel</MenuItem>
-              <MenuItem value='client'>Client</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={4}>
-          <Typography variant='h6'>Event Name</Typography>
-        </Grid>
-        <Grid item xs={8}>
-          <FormControl className={classes.formControl}>
-            <Select
-              id='event-name'
-              value={eventName}
-              onChange={(event) => {
-                setEventName(event.target.value);
-              }}>
-              <MenuItem value='counsel'>Counsel</MenuItem>
-              <MenuItem value='opposing-counsel'>Opposing Counsel</MenuItem>
-              <MenuItem value='client'>Client</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={4}>
-          <Typography variant='h6'>Event Date</Typography>
-        </Grid>
-        <Grid item xs={8}>
-          <FormControl className={classes.formControl}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                autoOk='true'
-                variant='inline'
-                format='MM/dd/yyyy'
-                margin='normal'
-                id='date-picker-inline'
-                label='Date picker inline'
-                value={eventDate}
-                onChange={(date) => {
-                  setEventDate(date);
-                }}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        variant={'success'}
+      />
+      <Dialog onClose={handleClose} aria-labelledby='simple-dialog-title' open={open}>
+        <DialogTitle id='simple-dialog-title'>Add New Event</DialogTitle>
+        <Grid container spacing={3} className={'m-3'} align="center">
+          <Grid item xs={12} align="center">
+            <FormControl className={'pr-5'}>
+              <Select
+                align='start'
+                id='event-owner'
+                value={eventOwner}
+                onChange={(event) => {
+                  setEventOwner(event.target.value);
+                }}>
+                {(
+                  Object.keys(eventPersonaMapping).map(function (key) {
+                    return <MenuItem value={eventPersonaMapping[key]}>{key}</MenuItem>
+                  })
+                )}
+              </Select>
+              <FormHelperText>Who should be carrying out the action?</FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} align="center">
+            <FormControl className={'pr-5'}>
+              <Select
+                align='start'
+                id='event-owner'
+                value={eventType}
+                onChange={(event) => {
+                  setEventType(event.target.value);
+                  if (event.target.value != 'custom') {
+                    setEventName(event.target.value);
+                  } else {
+                    setEventName(null);
+                  }
+
+                }}>
+                {(
+                  Object.keys(eventTypeMapping).map(function (key) {
+                    return <MenuItem selected={true} value={key}>{key}</MenuItem>
+                  })
+                )}
+              </Select>
+              <FormHelperText>What is the type of event?</FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} align="center">
+            <FormControl className={''}>
+              <TextField
+                margin="dense"
+                id="event-name"
+                type="text"
+                fullWidth
+                value={eventName}
+                onChange={(e) => { setEventName(e.target.value) }}
+                required
               />
-            </MuiPickersUtilsProvider>
-          </FormControl>
+              <FormHelperText>What is the name of this event?</FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} align="center">
+            <FormControl className={'pr-5'}>
+              <TextareaAutosize
+                margin="dense"
+                id="event-details"
+                type="textarea"
+                className={'textarea-border'}
+                fullWidth
+                value={eventDetails}
+                onChange={(e) => { setEventDetails(e.target.value) }}
+                required
+              />
+              <FormHelperText>Are there any additional details?</FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} align="center">
+            <FormControl className={'date'}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                <KeyboardDatePicker
+                  autoOk='true'
+                  variant='inline'
+                  format='MM/dd/yyyy'
+                  margin='normal'
+                  value={eventDate}
+                  onChange={(date) => {
+                    setEventDate(date);
+                  }}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              <FormHelperText>What is the deadline for this event?</FormHelperText>
+            </FormControl>
+          </Grid>
         </Grid>
-      </Grid>
-      <button type='button' class='btn btn-primary' onClick={createEvent}>
-        Create
-        <CircularProgress color='secondary' />
-      </button>
-    </Dialog>
+        {/* <CircularProgress color='secondary' /> */}
+        <button type='button' class='btn btn-primary m-4' onClick={createEvent}>
+          Create
+        </button>
+      </Dialog >
+    </>
   );
 }
 

@@ -23,8 +23,16 @@ import Login from './views/examples/Login.js';
 import Repository from './views/examples/Repository';
 import Icons from './views/examples/Icons.js';
 import Cases from "./views/Cases.js";
+import ClaimFileUpload from './components/FileUpload/ClaimFileUpload.component.jsx';
 
 var routes = [
+  {
+    path: "/cases",
+    name: "Cases",
+    icon: "ni ni-folder-17",
+    component: Cases,
+    layout: "/home",
+  },
   {
     path: '/timeline',
     name: 'Timeline',
@@ -46,40 +54,41 @@ var routes = [
     component: Icons,
     layout: '/admin',
   },
-  {
-    path: '/maps',
-    name: 'Maps',
-    icon: 'ni ni-pin-3 text-orange',
-    component: Maps,
-    layout: '/admin',
-  },
-  {
-    path: '/user-profile',
-    name: 'Shared Documents',
-    icon: 'ni ni-single-02 text-yellow',
-    component: Profile,
-    layout: '/admin',
-  },
+  // {
+  //   path: '/maps',
+  //   name: 'Maps',
+  //   icon: 'ni ni-pin-3 text-orange',
+  //   component: Maps,
+  //   layout: '/admin',
+  // },
+  // {
+  //   path: '/user-profile',
+  //   name: 'Shared Documents',
+  //   icon: 'ni ni-single-02 text-yellow',
+  //   component: Profile,
+  //   layout: '/admin',
+  // },
   {
     path: '/login',
-    name: 'Login',
-    icon: 'ni ni-key-25 text-info',
     component: Login,
     layout: '/auth',
   },
+  // {
+  //   path: '/register',
+  //   name: 'Register',
+  //   icon: 'ni ni-circle-08 text-pink',
+  //   component: Register,
+  //   layout: '/auth',
+  // },
   {
-    path: '/register',
-    name: 'Register',
-    icon: 'ni ni-circle-08 text-pink',
-    component: Register,
-    layout: '/auth',
+    path: "/login/:method/:caseId",
+    component: Login,
+    layout: "/auth",
   },
   {
-    path: "/cases",
-    name: "Cases",
-    icon: "ni ni-folder-17",
-    component: Cases,
-    layout: "/home",
-  },
+    path: "/upload",
+    component: ClaimFileUpload,
+    layout: "/claim",
+  }
 ];
 export default routes;

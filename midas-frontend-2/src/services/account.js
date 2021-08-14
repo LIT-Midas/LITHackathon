@@ -10,11 +10,16 @@ const Account = (props) => {
   const [validUser, setValidUser] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [userId, setUserId] = useState('');
+  const [persona, setPersona] = useState('');
 
   const logout = () => {
     Auth.signOut();
     setUserEmail('');
     setUsername('');
+    setName('');
+    setUserId('');
     setValidUser(false);
   }
 
@@ -23,10 +28,16 @@ const Account = (props) => {
       validUser,
       userEmail,
       username,
+      name,
+      userId,
+      persona,
       setValidUser,
       setUserEmail,
       setUsername,
-      logout
+      setName,
+      setUserId,
+      setPersona,
+      logout,
     }} {...props} />
   );
 };

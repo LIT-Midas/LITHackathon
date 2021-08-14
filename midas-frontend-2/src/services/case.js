@@ -4,11 +4,14 @@ const CaseContext = createContext();
 
 const Case = (props) => {
   const [selectedCase, setSelectedCase] = useState(null);
+  const [caseName, setCaseName] = useState(null);
 
   return (
     <CaseContext.Provider value={{
       selectedCase,
-      setSelectedCase
+      caseName,
+      setSelectedCase,
+      setCaseName,
     }} {...props} />
   );
 };

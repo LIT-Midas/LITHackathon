@@ -29,14 +29,13 @@ import routes from "../routes";
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-
   React.useEffect(() => {
     document.body.classList.add("bg-default");
     return () => {
       document.body.classList.remove("bg-default");
     };
   }, []);
-  
+
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -68,7 +67,7 @@ const Auth = (props) => {
             <div className="header-body text-center mb-1">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-                  <h1 className="text-white">Welcome to Midas!</h1>
+                  <h1 className="text-white">Welcome to Docu-Mate!</h1>
                   <p className="text-lead text-light">
                     Your personal AI assistant for case management
                   </p>

@@ -8,6 +8,7 @@ import "./assets/scss/argon-dashboard-react.scss";
 import awsconfig from './aws-exports';
 import AdminLayout from "./layouts/Admin.js";
 import AuthLayout from "./layouts/Auth.js";
+import Claim from "./layouts/Claim";
 import Home from "./layouts/Home";
 import { Account } from "./services/account";
 import { Case } from "./services/case";
@@ -23,6 +24,7 @@ function App() {
             <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
             <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
             <Route path="/home" render={(props) => <Home {...props} />} />
+            <Route path="/claim" render={(props) => <Claim {...props} />} />
             <Redirect from="/" to="/auth/login" />
           </Switch>
         </BrowserRouter>

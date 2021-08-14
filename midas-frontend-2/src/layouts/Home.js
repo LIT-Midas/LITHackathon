@@ -28,7 +28,7 @@ import { AccountContext } from "../services/account.js";
 const Home = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-  const { username } = useContext(AccountContext);
+  const { name } = useContext(AccountContext);
 
   React.useEffect(() => {
     document.body.classList.add("bg-default");
@@ -68,7 +68,7 @@ const Home = (props) => {
             <div className="header-body text-center mb-1">
               <Row className="justify-content-center">
                 <Col lg="7" md="8">
-                  <h1 className="text-white">Welcome back, {username ?? 'Unknown'}!</h1>
+                  <h1 className="text-white">Welcome back, {name ?? 'Unknown'}!</h1>
                 </Col>
               </Row>
             </div>

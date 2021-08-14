@@ -1,0 +1,12 @@
+.date-picker {
+  text-align: center!important;
+}
+
+.MuiFormControl-root {
+  width: 90%!important;
+}
+
+.textarea-border {
+  outline: 0;
+  border-width: 0 0 1px;
+}

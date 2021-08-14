@@ -15,14 +15,18 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Container } from 'reactstrap';
+import { AccountContext } from '../services/account';
 import { CaseContext } from '../services/case';
 import './Cases.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Cases = () => {
-  const baseURL = 'https://run.mocky.io';
-  const { setSelectedCase } = useContext(CaseContext);
+  const baseURL = 'https://26b8cf35526e.ngrok.io';
+  const { userId, name } = useContext(AccountContext)
+  const { setSelectedCase, setCaseName } = useContext(CaseContext);
   const [casesData, setCasesData] = useState([]);
   const [open, setOpen] = React.useState(false);
   const newCaseName = useRef('');
@@ -30,11 +34,15 @@ const Cases = () => {
   const newClientEmail = useRef('');
   const newDescription = useRef('');
   const newClientContactNumber = useRef(null);
+  const history = useHistory();
 
   useEffect(() => {
     setSelectedCase(null);
+    setCaseName(null);
     getCases();
   }, [])
+
+  const notify = () => toast("Case has been successfully created!!");
 
   const useStyles = makeStyles({
     root: {
@@ -64,43 +72,53 @@ const Cases = () => {
     clearNewVariables();
   };
 
-  const getCases = () => {
-    axios
-      .get(baseURL + '/v3/36adddb3-3b26-45d9-b461-bf6d2f3f8bc4')
-      .then(function (response) {
-        const result = response?.data;
-        if (response?.status === 200) {
-          console.log(result['data']);
-          setCasesData(result['data']);
-        } else {
-          // if (result?.message !== null) {
-          //   setResponseType(result?.message ? 'danger' : null);
-          // }
-          // setResponseMessage(result?.message);
-        }
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+  const getCases = async () => {
+    if (userId != null && userId != '') {
+      await axios
+        .get(baseURL + `/claims/user/${userId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(function (response) {
+          const result = response?.data;
+          if (response?.status === 200) {
+            console.log(result);
+            setCasesData(result ?? []);
+          } else {
+            // if (result?.message !== null) {
+            //   setResponseType(result?.message ? 'danger' : null);
+            // }
+            // setResponseMessage(result?.message);
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
   }
 
-  const createCase = () => {
+  const createCase = async () => {
     const data = {
       "name": newCaseName.current,
-      "user_id": 1,
+      "user_id": userId,
       "client_name": newClientName.current,
       "client_email": newClientEmail.current,
       "description": newDescription.current,
-      "contact_number": newClientContactNumber.current,
+      "contact_number": '' + newClientContactNumber.current,
       "start_date": new Date(),
     }
-    axios
-      .post(baseURL + '', data)
+    await axios
+      .post(baseURL + '/claims', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
       .then(function (response) {
         const result = response?.data;
         if (response?.status === 200) {
           handleClose();
-          alert('Successfully created a new case!');
+          notify();
           getCases();
         }
       })
@@ -116,7 +134,7 @@ const Cases = () => {
             <Button onClick={handleClickOpen}>
               <Row>
                 <AddIcon fontSize={'50'} />
-                <h4 class="material-icons-outlined">
+                <h4 className={"material-icons-outlined"}>
                   add a new case
                 </h4>
               </Row>
@@ -151,9 +169,8 @@ const Cases = () => {
             <Button size="small" onClick={() => {
               console.log(cases.id);
               setSelectedCase(cases.id);
-              return (<Redirect to={{
-                pathname: "/admin/timeline",
-              }} />);
+              setCaseName(cases.name);
+              history.push('/admin/timeline');
             }}>Select Case</Button>
           </CardActions>
         </Card>
@@ -251,6 +268,18 @@ const Cases = () => {
   // Client, description, last modified
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        variant={'success'}
+      />
       <RegistrationDialog />
       <Container>
         <h1 className="pt-3 title">Select a case:</h1>
