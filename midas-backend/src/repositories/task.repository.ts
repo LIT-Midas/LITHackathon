@@ -55,6 +55,15 @@ export const updateTask  = async (id: number, payload: ITaskPayload) :Promise<Ta
   })
 }
 
+export const completeTask  = async (id: number, completed_date: Date) :Promise<Task> => {
+  const taskRepository = getRepository(Task);
+  const task = await taskRepository.findOne({ id: id })
+  task!.completed_date = completed_date
+  return taskRepository.save({
+    ...task
+  })
+}
+
 export const deleteTask  = async (id: number) :Promise<DeleteResult | null> => {
   const taskRepository = getRepository(Task);
   const task = await taskRepository.findOne({id: id})

@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne} from "typeorm";
 import { Client } from "./client";
+import { Receiver } from "./receiver";
 import { Task } from "./task";
 import { User } from "./user";
 
@@ -35,6 +36,9 @@ export class Claim {
     @OneToOne(_type => Client, (client: Client) => client.claim, { onDelete: 'CASCADE' })
     @JoinColumn()
     client!: Client;
+
+    @OneToMany(_type => Receiver, (receiver: Receiver) => receiver.claim)
+    receivers!: Array<Receiver>;
 
     @OneToMany(_type => Task, (task: Task) => task.claim)
     tasks!: Array<Task>;

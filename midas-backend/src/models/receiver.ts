@@ -1,12 +1,12 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, UpdateDateColumn, OneToOne, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, UpdateDateColumn, ManyToMany, ManyToOne} from "typeorm";
 import { Claim } from "./claim";
-import { Document } from "./document";
+import { Document } from "./document"
 
 /**
  * @tsoaModel
  */
 @Entity()
-export class Client {
+export class Receiver {
 
   @PrimaryGeneratedColumn()
   id!: number;
@@ -22,11 +22,11 @@ export class Client {
 
   @Column({ nullable: true })
   claim_id!: number;
-  @OneToOne(_type => Claim, (claim: Claim) => claim.client, { onDelete: 'CASCADE' })
+  @ManyToOne(_type => Claim, (claim: Claim) => claim.receivers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: "claim_id" })
   claim!: Claim;
 
-  @OneToMany(_type => Document, (document: Document) => document.upload_person)
+  @ManyToMany(_type => Document, (document: Document) => document.shared_with)
   documents!: Array<Document>;
   
   @CreateDateColumn()

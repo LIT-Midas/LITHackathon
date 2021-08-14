@@ -45,6 +45,7 @@ export const createClaim  = async (payload: IClaimPayload) :Promise<Claim> => {
     name: "Claim created",
     claim_id: newClaim.id,
     start_date: payload.start_date,
+    completed_date: payload.start_date
   });
   const msg = {
     from: 'darren.chia.2018@smu.edu.sg',

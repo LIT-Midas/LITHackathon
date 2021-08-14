@@ -8,6 +8,11 @@ export interface IClientPayload {
   access_code: string;
 }
 
+export interface IClientVerifyPayload {
+  email: string;
+  access_code: string;
+}
+
 export const getClients  = async () :Promise<Array<Client>> => {
   const clientRepository = getRepository(Client);
   return clientRepository.find()
@@ -43,4 +48,11 @@ export const deleteClient  = async (id: number) :Promise<DeleteResult | null> =>
   const client = await clientRepository.findOne({id: id})
   if (!client) return null
   return clientRepository.delete(id);
+}
+
+export const verifyClient  = async (email: string, access_code: string) :Promise<boolean> => {
+  const clientRepository = getRepository(Client);
+  const client = await clientRepository.findOne({ where: { email: email, access_code: access_code }})
+  if (!client) return false
+  return true
 }

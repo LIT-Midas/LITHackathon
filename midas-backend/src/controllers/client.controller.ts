@@ -1,7 +1,7 @@
 import { Get, Route, Tags,  Post, Body, Path, Delete } from "tsoa";
 import { DeleteResult } from "typeorm";
 import {Client} from '../models'
-import {getClients, createClient, IClientPayload, getClient, updateClient, deleteClient} from '../repositories/client.repository'
+import {getClients, createClient, IClientPayload, getClient, updateClient, deleteClient, verifyClient, IClientVerifyPayload} from '../repositories/client.repository'
 
 @Route("clients")
 @Tags("Client")
@@ -19,6 +19,11 @@ export default class UserController {
   @Get("/:id")
   public async getClient(@Path() id: string): Promise<Client | null> {
     return getClient(Number(id))
+  }
+
+  @Post("/verify")
+  public async verifyClient(@Body() body: IClientVerifyPayload): Promise<boolean> {
+    return verifyClient(body.email, body.access_code)
   }
 
   @Post("/:id")

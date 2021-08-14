@@ -29,6 +29,13 @@ router.get("/claim/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.post("/complete/:id", async (req, res) => {
+  const controller = new TaskController();
+  const response = await controller.completeTask(req.params.id, req.body);
+  if (!response) res.status(404).send({message: "No task found"})
+  return res.send(response);
+});
+
 router.post("/:id", async (req, res) => {
   const controller = new TaskController();
   const response = await controller.updateTask(req.params.id, req.body);

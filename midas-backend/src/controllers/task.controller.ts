@@ -1,7 +1,7 @@
 import { Get, Route, Tags,  Post, Body, Path, Delete } from "tsoa";
 import { DeleteResult } from "typeorm";
 import {Task} from '../models'
-import { getTasks, ITaskPayload, createTask, getTask, getClaimTasks, updateTask, deleteTask } from "../repositories/task.repository";
+import { getTasks, ITaskPayload, createTask, getTask, getClaimTasks, updateTask, deleteTask, completeTask } from "../repositories/task.repository";
 
 @Route("tasks")
 @Tags("Task")
@@ -19,6 +19,11 @@ export default class TaskController {
   @Post("/:id")
   public async updateTask(@Path() id: string, @Body() body: ITaskPayload): Promise<Task> {
     return updateTask(Number(id), body)
+  }
+
+  @Post("/complete/:id")
+  public async completeTask(@Path() id: string, @Body() body: {completed_date: Date}): Promise<Task> {
+    return completeTask(Number(id), body.completed_date)
   }
 
   @Get("/:id")
