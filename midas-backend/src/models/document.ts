@@ -39,7 +39,7 @@ export class Document {
 
     @Column({ nullable: true })
     claim_id!: number;
-    @ManyToOne(_type => Claim, (claim: Claim) => claim.tasks, { eager: true, onDelete: 'CASCADE' })
+    @ManyToOne(_type => Claim, (claim: Claim) => claim.documents, { eager: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: "claim_id" })
     claim!: Claim;
 

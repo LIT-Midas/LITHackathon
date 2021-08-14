@@ -97,6 +97,12 @@
 						},
 						"type": "array"
 					},
+					"documents": {
+						"items": {
+							"$ref": "#/components/schemas/Document"
+						},
+						"type": "array"
+					},
 					"start_date": {
 						"type": "string",
 						"format": "date-time"
@@ -121,6 +127,7 @@
 					"client",
 					"receivers",
 					"tasks",
+					"documents",
 					"start_date",
 					"created_at",
 					"updated_at"
@@ -275,6 +282,81 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IRecordOfAny": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {}
+			},
+			"Document": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"upload_url": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"claim": {
+						"$ref": "#/components/schemas/Claim"
+					},
+					"type": {
+						"type": "string"
+					},
+					"job_id": {
+						"type": "string"
+					},
+					"form_data": {
+						"items": {
+							"$ref": "#/components/schemas/IRecordOfAny"
+						},
+						"type": "array"
+					},
+					"raw": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"title",
+					"status",
+					"upload_url",
+					"claim_id",
+					"claim",
+					"type",
+					"job_id",
+					"form_data",
+					"raw",
+					"created_at",
+					"updated_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IUserPayload": {
 				"properties": {
 					"name": {
@@ -415,81 +497,6 @@
 				"required": [
 					"email",
 					"access_code"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IRecordOfAny": {
-				"properties": {},
-				"type": "object",
-				"additionalProperties": {}
-			},
-			"Document": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"title": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string"
-					},
-					"upload_url": {
-						"type": "string"
-					},
-					"claim_id": {
-						"type": "number",
-						"format": "double"
-					},
-					"claim": {
-						"$ref": "#/components/schemas/Claim"
-					},
-					"type": {
-						"type": "string"
-					},
-					"job_id": {
-						"type": "string"
-					},
-					"form_data": {
-						"items": {
-							"$ref": "#/components/schemas/IRecordOfAny"
-						},
-						"type": "array"
-					},
-					"raw": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"created_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updated_at": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"title",
-					"status",
-					"upload_url",
-					"claim_id",
-					"claim",
-					"type",
-					"job_id",
-					"form_data",
-					"raw",
-					"created_at",
-					"updated_at"
 				],
 				"type": "object",
 				"additionalProperties": false
