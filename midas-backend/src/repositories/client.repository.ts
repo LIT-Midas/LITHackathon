@@ -13,7 +13,7 @@ export const getClients  = async () :Promise<Array<Client>> => {
   return clientRepository.find()
 }
 
-export const createClient  = async (payload: IClientPayload) :Promise<Client> => {
+export const createClient = async (payload: IClientPayload): Promise<Client> => {
   const clientRepository = getRepository(Client);
   const client = new Client()
   return clientRepository.save({

@@ -1,6 +1,9 @@
 import {DeleteResult, getRepository} from "typeorm";
 import { Claim, Client, Task } from '../models'
 import password from 'secure-random-password';
+import sendGridMail from '@sendgrid/mail';
+
+sendGridMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
 export interface IClaimPayload {
   name: string;
@@ -31,17 +34,44 @@ export const createClaim  = async (payload: IClaimPayload) :Promise<Claim> => {
     ...claim,
     ...payload
   })
+  const pass_code = password.randomPassword({ length: 4, characters: password.digits })
   const client = clientRepository.create({
     name: payload.client_name,
     email: payload.client_email,
     claim_id: newClaim.id,
-    access_code: password.randomPassword({ length: 4, characters: password.digits }),
+    access_code: pass_code,
   });
   const task = taskRepository.create({
     name: "Claim created",
     claim_id: newClaim.id,
     start_date: payload.start_date,
   });
+  const msg = {
+    from: 'darren.chia.2018@smu.edu.sg',
+    templateId: 'd-7c2e2c212b9b4a92912fe43ffcd7440c',
+    personalizations: [
+      {
+        to: [
+          {
+            email: payload.client_email
+          }
+        ],
+        dynamic_template_data: {
+          client: payload.client_name,
+          url: "http://hello.com",
+          access_code: pass_code
+        }
+      }
+    ]
+  }
+  sendGridMail
+    .send(msg)
+    .then(() => {
+      console.log('Email sent')
+    })
+    .catch((error: any) => {
+      console.error(error)
+    })
   await taskRepository.save(task);
   await clientRepository.save(client);
   newClaim.client_id = client.id

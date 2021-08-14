@@ -1,7 +1,9 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, UpdateDateColumn, OneToOne} from "typeorm";
 import { Claim } from "./claim";
 
-
+/**
+ * @tsoaModel
+ */
 @Entity()
 export class Client {
 
