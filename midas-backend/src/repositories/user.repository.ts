@@ -26,3 +26,11 @@ export const getUser  = async (id: number) :Promise<User | null> => {
   if (!user) return null
   return user
 }
+
+export const getUserByEmail  = async (email: string) :Promise<User | null> => {
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne({ where: { email: email } })
+  if (!user) return null
+  return user
+}
+

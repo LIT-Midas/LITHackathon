@@ -22,4 +22,11 @@ router.get("/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.get("/email/:email", async (req, res) => {
+  const controller = new UserController();
+  const response = await controller.getUserByEmail(req.params.email);
+  if (!response) res.status(404).send({message: "No user found"})
+  return res.send(response);
+});
+
 export default router

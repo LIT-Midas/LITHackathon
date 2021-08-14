@@ -2,7 +2,7 @@ import "reflect-metadata";
 require('dotenv').config()
 import { createConnection } from "typeorm";
 import express, { Application } from "express";
-var cors = require('cors')
+import cors from 'cors';
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 
