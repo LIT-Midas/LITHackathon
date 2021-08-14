@@ -22,7 +22,7 @@ router.get("/:id", async (req, res) => {
   return res.send(response);
 });
 
-router.get("/user/:id", async (req, res) => {
+router.get("/claim/:id", async (req, res) => {
   const controller = new TaskController();
   const response = await controller.getClaimTasks(req.params.id);
   if (!response) res.status(404).send({message: "No tasks found"})
