@@ -3,7 +3,6 @@ import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
 import moment from 'moment';
 import axios from 'axios';
-import download from 'downloadjs';
 
 export default function FileDownloadTable(props) {
   const { data } = props;
@@ -25,9 +24,8 @@ export default function FileDownloadTable(props) {
         'Content-Disposition': 'attachment',
       }
     }).then((request) => {
-      console.log(request.data);
       if (request.data != null) {
-        download(request.data);
+        window.location.href = request.data;
       }
     }).catch((error) => {
       console.error(error);
