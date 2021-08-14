@@ -17,9 +17,6 @@ export class User {
 
   @OneToMany(_type => Claim, (claim: Claim) => claim.user)
   claims!: Array<Claim>;
-
-  @OneToMany(_type => Document, (document: Document) => document.upload_person)
-  documents!: Array<Document>;
   
   @CreateDateColumn()
   created_at!: Date;

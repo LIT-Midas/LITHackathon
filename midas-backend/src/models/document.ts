@@ -66,21 +66,6 @@ export class Document {
       nullable: true
     })
     raw!: Array<string>;
-  
-    @Column({ nullable: true })
-    upload_person_id!: number;
-    @ManyToOne(_type => User || Client, (upload_person: User | Client) => upload_person.documents, { eager: true, onDelete: 'CASCADE' })
-    @JoinColumn({ name: "upload_person_id" })
-    upload_person!: User | Client;
-  
-    @Column({
-      type: 'text',
-      nullable: true
-    })
-    persona!: string;
-  
-    @ManyToMany(_type => Receiver, (receiver: Receiver) => receiver.documents)
-    shared_with!: Array<Receiver>;
 
     @CreateDateColumn()
     created_at!: Date;

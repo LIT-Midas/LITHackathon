@@ -4,8 +4,6 @@ import { S3 } from 'aws-sdk';
 
 export interface IDocumentPayload {
   claim_id: number;
-  upload_person_id: number;
-  persona: string;
 }
 
 export interface IS3FilePayload {
