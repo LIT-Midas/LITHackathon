@@ -5,7 +5,7 @@ import { getDocuments, IDocumentPayload, createDocument, getDocument, getClaimDo
 
 @Route("documents")
 @Tags("Document")
-export default class TaskController {
+export default class DocumentController {
   @Get("/")
   public async getDocuments(): Promise<Array<Document>> {
     return getDocuments()
