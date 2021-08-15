@@ -553,6 +553,25 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IS3FormDataPayload": {
+				"properties": {
+					"form_data": {
+						"items": {
+							"$ref": "#/components/schemas/IRecordOfAny"
+						},
+						"type": "array"
+					},
+					"job_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"form_data",
+					"job_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IReceiverPayload": {
 				"properties": {
 					"name": {
@@ -1556,6 +1575,51 @@
 				]
 			}
 		},
+		"/documents/key": {
+			"post": {
+				"operationId": "GetDocumentByKey",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Document"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"key": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"key"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/documents/claim/{id}": {
 			"get": {
 				"operationId": "GetClaimDocuments",
@@ -1653,6 +1717,50 @@
 				]
 			}
 		},
+		"/documents/multiPresigned": {
+			"post": {
+				"operationId": "GenerateMultiplePresignedUrl",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"properties": {
+										"id": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/documents/bootstrap": {
 			"post": {
 				"operationId": "CreateS3Document",
@@ -1679,6 +1787,38 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/IS3Payload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/documents/formdata": {
+			"post": {
+				"operationId": "UpdateDocumentFormData",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IS3FormDataPayload"
 							}
 						}
 					}

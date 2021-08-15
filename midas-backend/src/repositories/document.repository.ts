@@ -97,24 +97,31 @@ export const generateDocumentPresignedUrl = async (id: number): Promise<any> => 
   })
 }
 
-export const generateMultiplePresignedUrl = async (ids: number[]): Promise<any> => {
+export const generateMultiplePresignedUrl = async (ids: {id: number}[]): Promise<any> => {
   const s3 = new S3();
   const documentRepository = getRepository(Document);
-  const signedUrl: any = []
-  ids.forEach(async id => {
-    const document = await documentRepository.findOne({ id: id })
+  const signedUrls = Promise.all(ids.map(async id => {
+    const document = await documentRepository.findOne({ id: id.id })
     if (!document) return null
-    signedUrl.push(s3.getSignedUrlPromise('getObject', {
+    const url = await s3.getSignedUrlPromise('getObject', {
       Bucket: `${process.env.AWS_BUCKET_NAME}`,
       Key: document.name
-    }))
-  })
-  return Promise.all(signedUrl)
+    })
+    return url
+  }))
+  return signedUrls
 }
 
 export const getDocument  = async (id: number) :Promise<Document | null> => {
   const documentRepository = getRepository(Document);
   const document = await documentRepository.findOne({id: id})
+  if (!document) return null
+  return document
+}
+
+export const getDocumentByKey  = async (key: string) :Promise<Document | null> => {
+  const documentRepository = getRepository(Document);
+  const document = await documentRepository.findOne({name: key})
   if (!document) return null
   return document
 }
@@ -128,13 +135,12 @@ export const updateDocument  = async (id: number, payload: IDocumentPayload) :Pr
   })
 }
 
-export const updateDocumentFormData = async (name: string, form_data: any, job_id: string): Promise<Document> => {
+export const updateDocumentFormData = async (form_data: any, job_id: string): Promise<Document> => {
   const documentRepository = getRepository(Document);
-  const document = await documentRepository.findOne({ name: name })
+  const document = await documentRepository.findOne({ job_id: job_id })
   return documentRepository.save({
     ...document,
     form_data: form_data,
-    job_id: job_id
   })
 }
 

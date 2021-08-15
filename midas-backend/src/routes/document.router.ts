@@ -54,6 +54,13 @@ router.get("/claim/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.post("/key", async (req, res) => {
+  const controller = new DocumentController();
+  const response = await controller.getDocumentByKey(req.body);
+  if (!response) res.status(404).send({message: "No document found"})
+  return res.send(response);
+});
+
 router.get("/download/:id", async (req, res) => {
   const controller = new DocumentController();
   const response = await controller.downloadDocument(req.params.id);
@@ -68,10 +75,23 @@ router.get("/presignedUrl/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.post("/multiPresigned", async (req, res) => {
+  const controller = new DocumentController();
+  const response = await controller.generateMultiplePresignedUrl(req.body);
+  if (!response) res.status(404).send({ message: "No document found" })
+  return res.send(response);
+});
+
 router.post("/bootstrap", async (req, res) => {
   const controller = new DocumentController();
   const response = await controller.createS3Document(req.body);
   return res.send({message: "S3 Bootstrapped!"})
+});
+
+router.post("/formdata", async (req, res) => {
+  const controller = new DocumentController();
+  const response = await controller.updateDocumentFormData(req.body);
+  return res.send({message: "Document updated!"})
 });
 
 router.post("/:id", async (req, res) => {
