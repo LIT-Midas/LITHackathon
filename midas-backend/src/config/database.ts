@@ -1,5 +1,5 @@
 import { ConnectionOptions } from "typeorm";
-import {User, Claim, Task, Client} from '../models'
+import {User, Claim, Task, Client, Document, Receiver} from '../models'
 
 const config: ConnectionOptions = {
   type: "postgres",
@@ -8,7 +8,7 @@ const config: ConnectionOptions = {
   username: process.env.POSTGRES_USER || "postgres",
   password: process.env.POSTGRES_PASSWORD || "postgres",
   database: process.env.POSTGRES_DB || "postgres",
-  entities: [User, Claim, Task, Client],
+  entities: [User, Claim, Task, Client, Document, Receiver],
   synchronize: true,
 };
 

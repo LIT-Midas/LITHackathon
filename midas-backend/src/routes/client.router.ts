@@ -29,6 +29,12 @@ router.post("/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.post("/verify", async (req, res) => {
+  const controller = new ClientController();
+  const response = await controller.verifyClient(req.body);
+  return res.send(response);
+});
+
 router.delete("/:id", async (req, res) => {
   const controller = new ClientController();
   const response = await controller.deleteClient(req.params.id);

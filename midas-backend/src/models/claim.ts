@@ -1,5 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne} from "typeorm";
 import { Client } from "./client";
+import { Document } from "./document";
+import { Receiver } from "./receiver";
 import { Task } from "./task";
 import { User } from "./user";
 
@@ -36,8 +38,14 @@ export class Claim {
     @JoinColumn()
     client!: Client;
 
+    @OneToMany(_type => Receiver, (receiver: Receiver) => receiver.claim)
+    receivers!: Array<Receiver>;
+
     @OneToMany(_type => Task, (task: Task) => task.claim)
     tasks!: Array<Task>;
+
+    @OneToMany(_type => Document, (document: Document) => document.claim)
+    documents!: Array<Document>;
 
     @Column({ type: 'date' })
     start_date!: Date;

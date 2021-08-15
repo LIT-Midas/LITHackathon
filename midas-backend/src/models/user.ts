@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn} from "typeorm";
 import { Claim } from "./claim";
+import { Document } from "./document";
 
 
 @Entity()
