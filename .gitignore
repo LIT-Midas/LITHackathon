@@ -351,3 +351,5 @@ MigrationBackup/
 
 .DS_Store
 .elasticbeanstalk
+package-lock.json
+midas-frontend-2/package-lock.json

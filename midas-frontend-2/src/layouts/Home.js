@@ -1,0 +1,91 @@
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.2.1
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+import React, { useContext } from "react";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+// reactstrap components
+import { Col, Container, Row } from "reactstrap";
+// core components
+import AuthNavbar from "../components/Navbars/AuthNavbar.js";
+import routes from "../routes";
+import { AccountContext } from "../services/account.js";
+
+
+const Home = (props) => {
+  const mainContent = React.useRef(null);
+  const location = useLocation();
+  const { name } = useContext(AccountContext);
+
+  React.useEffect(() => {
+    document.body.classList.add("bg-default");
+    return () => {
+      document.body.classList.remove("bg-default");
+    };
+  }, []);
+
+  React.useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    mainContent.current.scrollTop = 0;
+  }, [location]);
+
+  const getRoutes = (routes) => {
+    return routes.map((prop, key) => {
+      if (prop.layout === "/home") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+
+  return (
+    <>
+      <div className="main-content" ref={mainContent}>
+        <AuthNavbar />
+        <div className="header bg-gradient-info pt-4 pb-2">
+          <Container>
+            <div className="header-body text-center mb-1">
+              <Row className="justify-content-center">
+                <Col lg="7" md="8">
+                  <h1 className="text-white">Welcome back, {name ?? 'Unknown'}!</h1>
+                </Col>
+              </Row>
+            </div>
+          </Container>
+        </div>
+        {/* Page content */}
+        <Container className="pb-5">
+          <Row className="justify-content-center">
+            <Switch>
+              {getRoutes(routes)}
+              <Redirect from="*" to="/home/cases" />
+            </Switch>
+          </Row>
+        </Container>
+      </div>
+    </>
+  );
+};
+
+export default Home;
