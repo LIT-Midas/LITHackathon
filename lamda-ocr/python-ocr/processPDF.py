@@ -74,7 +74,7 @@ def processPDF(bucket, key):
         })
 
     print(requestData)
-    r = requests.post('https://26b8cf35526e.ngrok.io/documents/bootstrap', data={
+    r = requests.post('https://8169f98443ef.ngrok.io/documents/bootstrap', data={
         "parent": key,
         "type": 'application/pdf',
         "data": requestData

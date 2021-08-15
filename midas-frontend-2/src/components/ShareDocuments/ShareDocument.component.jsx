@@ -66,7 +66,7 @@ const ShareDocument = () => {
 
   const ReceiverGrid = () => {
     const gridItems = [
-      <Grid item xs={12} s={6} md={4} lg={3} spacing={3} className="px-2 py-2">
+      <Grid item xs={12} s={6} md={4} lg={3} spacing={3} className="px-2 py-2 mr-6">
         <Card className={classes.root}>
           <CardContent className={'add-case my-auto'}>
             <Button onClick={handleClickOpen}>
@@ -86,7 +86,7 @@ const ShareDocument = () => {
 
     sharers.map((sharer, index) => {
       const documents = sharer['documents'];
-      gridItems.push(<Grid item xs={12} s={6} md={4} lg={3} spacing={3} className="px-2 py-2">
+      gridItems.push(<Grid item xs={12} s={6} md={4} lg={3} spacing={3} className="px-2 py-2 mx-5">
         <Card className={classes.root}>
           <CardContent className={'pb-0'}>
             <Typography variant="h5" component="h2">
@@ -122,7 +122,7 @@ const ShareDocument = () => {
   }
 
   const retrieveClaimDocuments = async () => {
-    selectedCase && await axios.get(`https://26b8cf35526e.ngrok.io/documents/claim/${selectedCase}`, {
+    selectedCase && await axios.get(`https://8169f98443ef.ngrok.io/documents/claim/${selectedCase}`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -135,7 +135,7 @@ const ShareDocument = () => {
   }
 
   const retrieveClaimSharers = async () => {
-    selectedCase && await axios.get(`https://26b8cf35526e.ngrok.io/receivers/claim/${selectedCase}`)
+    selectedCase && await axios.get(`https://8169f98443ef.ngrok.io/receivers/claim/${selectedCase}`)
       .then((request) => {
         console.log(request);
         if (request.status === 200) {
@@ -153,7 +153,7 @@ const ShareDocument = () => {
 
   const NewShareDialog = () => {
     return (
-      <Dialog open={dialogOpen} className={'w-100'} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={dialogOpen} fullWidth={true} maxWidth={'lg'} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Share files with a new recipient:</DialogTitle>
         <DialogContent className={'w-100'}>
           <TextField
@@ -174,7 +174,7 @@ const ShareDocument = () => {
             onChange={(e) => { userEmail.current = e.target.value }}
             required
           />
-          <FileDownloadTable data={data} />
+          <FileDownloadTable className={'mt-2 px-2'} data={data} />
         </DialogContent>
         <DialogActions className={'w-100'}>
           <Button onClick={handleClose} color="primary">

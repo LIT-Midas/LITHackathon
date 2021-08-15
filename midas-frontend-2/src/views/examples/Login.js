@@ -61,26 +61,28 @@ const Login = (props) => {
       "email": username.current,
       "access_code": password.current,
     }
-    setValidUser(true);
-    // method && await axios.post(`https://26b8cf35526e.ngrok.io/${method === 'upload' ? 'clients' : 'receivers'}/verify`, data, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   }
-    // }).then((request) => {
-    //   console.log(request.data);
-    //   if (request.status == 200) {
-    //     setUserEmail(request.data.email);
-    //     setValidUser(true);
-    //     setUserId(request.data.id);
-    //     setPersona(method === 'upload' ? 'clients' : 'receivers');
-    //   }
-    // }).catch((error) => {
-    //   console.error('Error validating request: ' + error);
-    // });
+    // setValidUser(true);
+    const path = encodeURI(`https://8169f98443ef.ngrok.io/${method === 'upload' ? 'clients' : 'receivers'}/${username.current}`);
+    console.log(path);
+    method && await axios.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then((request) => {
+      console.log(request.data);
+      if (request.status == 200) {
+        setUserEmail(request.data.email);
+        setValidUser(true);
+        setUserId(request.data.id);
+        setPersona(method === 'upload' ? 'clients' : 'receivers');
+      }
+    }).catch((error) => {
+      console.error('Error validating request: ' + error);
+    });
   }
 
   const fetchUserId = async (email) => {
-    email && await axios.get(`https://26b8cf35526e.ngrok.io/users/email/${email}`, {
+    email && await axios.get(`https://8169f98443ef.ngrok.io/users/email/${email}`, {
       headers: {
         'Content-Type': 'application/json',
       }

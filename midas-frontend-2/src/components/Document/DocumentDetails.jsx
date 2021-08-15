@@ -19,28 +19,28 @@ export default function DocumentDetail(props) {
   const [documentLink, setDocumentLink] = useState('');
   const [renderDocument, setRenderDocument] = useState(<Loader type='Puff' color='#00BFFF' height={100} width={100} />);
 
-  const { selectedFileId } = props;
+  const { selectedFileId, setSelectedFieldId, setFileSelected } = props;
   useEffect(async () => {
     let fileData;
-    await axios.get(`https://26b8cf35526e.ngrok.io/documents/${selectedFileId}`, {
+    await axios.get(`https://8169f98443ef.ngrok.io/documents/${selectedFileId}`, {
       headers: {
         'Content-Type': 'application/json',
       }
     }).then((result) => {
-      console.log(result);
+      console.log(result.data);
       fileData = result.data;
     });
 
     if (fileData) {
-      setDocumentTitle(fileData.file_name);
-      setUploadedBy(fileData.uploaded_by);
-      setUploadDate(new Date(fileData.upload_date));
-      setKeyInfo(fileData.key_info);
-      setDocumentType(fileData.file_type);
-      setExpense(keyInfo?.expense);
-      setDate(keyInfo?.date);
-      setCompanyName(keyInfo?.company_name);
-      setSerialNum(keyInfo?.serial_number);
+      setDocumentTitle(fileData.name);
+      setUploadedBy(fileData.uploader_name);
+      setUploadDate(new Date(fileData.created_at));
+      setKeyInfo(fileData.form_data);
+      setDocumentType(fileData?.file_type);
+      setExpense(fileData.form_data?.expense);
+      setDate(new Date(fileData.form_data?.date));
+      setCompanyName(fileData.form_data?.company_name);
+      setSerialNum(fileData.form_data?.serial_number);
       setRenderDocument(<img className='img-fluid' src={"https://i.ibb.co/q9fs359/Guardian-Health.jpg"} alt='' />);
     }
     // const config = { responseType: 'blob' };
@@ -54,7 +54,7 @@ export default function DocumentDetail(props) {
 
   const retrieveSignedUrl = async () => {
     console.log(selectedFileId);
-    selectedFileId && await axios.get(`https://26b8cf35526e.ngrok.io/documents/presignedUrl/${selectedFileId}`, {
+    selectedFileId && await axios.get(`https://8169f98443ef.ngrok.io/documents/presignedUrl/${selectedFileId}`, {
       headers: {
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': 'attachment',
@@ -68,10 +68,20 @@ export default function DocumentDetail(props) {
   }
 
   const updateDocument = async () => {
-    const data = {
-
+    const newFormData = {
+      expense: expense,
+      date: date,
+      company_name: companyName,
+      serial_number: serialNum
     }
-    await axios.post(`https://26b8cf35526e.ngrok.io/documents/${selectedFileId}`,)
+    const data = {
+      form_date: newFormData
+    }
+    selectedFileId && await axios.post(`https://8169f98443ef.ngrok.io/documents/${selectedFileId}`, data).then(res => {
+      console.log("success", res)
+      setFileSelected(false);
+      setSelectedFieldId(null);
+    })
   }
 
   return (

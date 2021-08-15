@@ -117,7 +117,7 @@ def lambda_handler(event, context):
     print(result)
     print(extractedKeyPairs)
 
-    r = requests.post('https://26b8cf35526e.ngrok.io/documents/formdata', data={
+    r = requests.post('https://8169f98443ef.ngrok.io/documents/formdata', data={
         'job_id': pdfTextExtractionJobId,
         'form_data': [extractedKeyPairs]
     })

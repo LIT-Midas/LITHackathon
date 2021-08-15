@@ -1,28 +1,19 @@
-import React, { useMemo, useState } from 'react';
-import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
-import moment from 'moment';
+import { DataGrid } from '@material-ui/data-grid';
 import axios from 'axios';
-import DocumentDetail from '../Document/DocumentDetails';
+import moment from 'moment';
+import React, { useMemo } from 'react';
 
 export default function FileDownloadTable(props) {
-  const { data } = props;
+  const { data, setFileSelected, setSelectedFileId } = props;
   data?.map(d => {
     d.uploader_name = d.uploader_name ?? 'Unknown';
     d.status = d.status ?? 'Not processed';
     d.created_at = moment(d.created_at, 'YYYY-MM-DDTHH:mm:ssZ').format('DD/MM/YYYY HH:mm');
   });
 
-  const [fileSelected, setFileSelected] = useState(false);
-  const [selectedFileId, setSelectedFileId] = useState(null);
-
-  const editDocument = (id) => {
-    setSelectedFileId(id);
-    setFileSelected(true);
-  }
-
   const downloadFile = async (id) => {
-    id && await axios.get(`https://26b8cf35526e.ngrok.io/documents/presignedUrl/${id}`, {
+    id && await axios.get(`https://8169f98443ef.ngrok.io/documents/presignedUrl/${id}`, {
       headers: {
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': 'attachment',
@@ -51,7 +42,7 @@ export default function FileDownloadTable(props) {
               color="primary-info"
               size="small"
               style={{ marginLeft: 16 }}
-              onClick={() => { editDocument(params.row.id) }}
+              onClick={() => { setFileSelected(true); setSelectedFileId(params.row.id); }}
             >
               Edit
             </Button>
@@ -76,21 +67,13 @@ export default function FileDownloadTable(props) {
     ], []);
   return (
     <div style={{ height: 530, width: '100%' }}>
-      {
-        !fileSelected ?
-          <DataGrid
-            rows={data}
-            columns={columns}
-            pageSize={8}
-            isRowSelectable={false}
-            checkboxSelection
-          /> :
-          <DocumentDetail
-            setFileSelected={setFileSelected}
-            setSelectedFileId={setSelectedFileId}
-            selectedFileId={selectedFileId}
-          />
-      }
+      <DataGrid
+        rows={data}
+        columns={columns}
+        pageSize={8}
+        isRowSelectable={false}
+        checkboxSelection
+      />
     </div>
   );
 }

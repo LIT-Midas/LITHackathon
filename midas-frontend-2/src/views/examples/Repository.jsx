@@ -26,22 +26,16 @@ import TextField from '@material-ui/core/TextField';
 import Add from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import axios from 'axios';
-import React, { useState, useRef, useContext, useEffect } from 'react';
-import {
-  Badge, Card, CardFooter, CardHeader, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress, Row, Table, UncontrolledDropdown, UncontrolledTooltip
-} from 'reactstrap';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Card, CardHeader, Col, Container, Row } from 'reactstrap';
+import DocumentDetail from '../../components/Document/DocumentDetails.jsx';
+import FileDownloadTable from '../../components/FileDownload/FileDownloadTable.component.jsx';
 import UploadFiles from '../../components/FileUpload/UploadFiles.component.jsx';
 import Header from '../../components/Headers/Header.js';
 import { CaseContext } from '../../services/case.js';
 import './Repository.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import FileDownloadTable from '../../components/FileDownload/FileDownloadTable.component.jsx';
-import DocumentDetail from '../../components/Document/DocumentDetails.jsx';
 
 const Repository = () => {
 
@@ -49,6 +43,9 @@ const Repository = () => {
   const [openRequestDialog, setOpenRequestDialog] = useState(false);
   const { selectedCase } = useContext(CaseContext);
   const [data, setData] = useState([]);
+  const [processedData, setProcessedData] = useState(null);
+  const [fileSelected, setFileSelected] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState(null);
   const recipientName = useRef(null);
   const recipientEmail = useRef(null);
 
@@ -56,6 +53,7 @@ const Repository = () => {
 
   useEffect(async () => {
     await fetchDocuments();
+    await fetchProcessedDocuments();
   }, [])
 
   const sendDocumentRequest = async () => {
@@ -64,7 +62,7 @@ const Repository = () => {
       "email": recipientEmail.current,
       "claim_id": selectedCase,
     }
-    await axios.post('https://26b8cf35526e.ngrok.io/clients', paramData, {
+    await axios.post('https://8169f98443ef.ngrok.io/clients', paramData, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -81,13 +79,28 @@ const Repository = () => {
 
   const fetchDocuments = async () => {
     if (selectedCase != null && selectedCase != '') {
-      await axios.get(`https://26b8cf35526e.ngrok.io/documents/claim/${selectedCase}`, {
+      await axios.get(`https://8169f98443ef.ngrok.io/documents/claim/${selectedCase}`, {
         headers: {
           'Content-Type': 'application/json',
         }
       }).then((request) => {
         console.log(request.data);
         setData(request.data ?? []);
+      }).catch((error) => {
+        console.error(error);
+      })
+    }
+  }
+
+  const fetchProcessedDocuments = async () => {
+    if (selectedCase != null && selectedCase != '') {
+      await axios.get(`https://8169f98443ef.ngrok.io/documents/merged/merged_files`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then((request) => {
+        console.log(request.data);
+        setProcessedData(request.data ?? []);
       }).catch((error) => {
         console.error(error);
       })
@@ -133,6 +146,52 @@ const Repository = () => {
     )
   }
 
+  const UploadAndBrowseTable = () => {
+    return (
+      <Card className='shadow'>
+        <CardHeader className='border-0'>
+          <Row>
+            <Col xs lg={openUpload ? '11' : '9'} className={'my-auto'}>
+              <h3 className='mb-0'>{openUpload ? 'Upload Documents' : 'All Documents'}</h3>
+            </Col>
+            <Col xs lg='1' className={'my-auto'}>
+              {
+                openUpload ?
+                  <button type='button' className={'btn btn-primary'} onClick={() => { setOpenUpload(false) }}>
+                    <RemoveIcon />
+                  </button> :
+                  <button type='button' className={'btn btn-primary'} onClick={() => { setOpenUpload(true); setOpenRequestDialog(false); }}>
+                    <Add />
+                  </button>
+              }
+            </Col>
+            {
+              !openUpload ? (
+                <Col xs lg={'2'} className={'my-auto'}>
+                  <button type='button' className={'btn btn-primary'} onClick={() => { setOpenRequestDialog(true) }}>
+                    Request docs
+                  </button>
+                </Col>
+              ) : <> </>
+            }
+          </Row>
+        </CardHeader>
+        {
+          openUpload ?
+            <UploadFiles setOpenUpload={setOpenUpload} fetchDocuments={fetchDocuments} /> :
+            <FileDownloadTable data={data ?? []} setFileSelected={setFileSelected} setSelectedFileId={setSelectedFileId} />
+        }
+        <br />
+        <Col xs lg={openUpload ? '11' : '9'} className={'my-auto'}>
+          <h3 className='mb-3'>{openUpload ? null : 'Processed Documents'}</h3>
+        </Col>
+        {
+          openUpload ? <></> : <FileDownloadTable data={processedData ?? []} setFileSelected={setFileSelected} setSelectedFileId={setSelectedFileId} />
+        }
+      </Card>
+    )
+  }
+
   return (
     <>
       <Header />
@@ -154,40 +213,11 @@ const Repository = () => {
         {/* Table */}
         <Row>
           <div className='col'>
-            <Card className='shadow'>
-              <CardHeader className='border-0'>
-                <Row>
-                  <Col xs lg={openUpload ? '11' : '9'} className={'my-auto'}>
-                    <h3 className='mb-0'>{openUpload ? 'Upload Documents' : 'Documents'}</h3>
-                  </Col>
-                  <Col xs lg='1' className={'my-auto'}>
-                    {
-                      openUpload ?
-                        <button type='button' className={'btn btn-primary'} onClick={() => { setOpenUpload(false) }}>
-                          <RemoveIcon />
-                        </button> :
-                        <button type='button' className={'btn btn-primary'} onClick={() => { setOpenUpload(true); setOpenRequestDialog(false); }}>
-                          <Add />
-                        </button>
-                    }
-                  </Col>
-                  {
-                    !openUpload ? (
-                      <Col xs lg={'2'} className={'my-auto'}>
-                        <button type='button' className={'btn btn-primary'} onClick={() => { setOpenRequestDialog(true) }}>
-                          Request docs
-                        </button>
-                      </Col>
-                    ) : <> </>
-                  }
-                </Row>
-              </CardHeader>
-              {
-                openUpload ?
-                  <UploadFiles setOpenUpload={setOpenUpload} fetchDocuments={fetchDocuments} /> :
-                  <FileDownloadTable data={data} />
-              }
-            </Card>
+            {
+              fileSelected ?
+                <DocumentDetail selectedFileId={selectedFileId} setSelectedFileId={setSelectedFileId} setFileSelected={setFileSelected} /> :
+                <UploadAndBrowseTable />
+            }
           </div>
         </Row>
       </Container>

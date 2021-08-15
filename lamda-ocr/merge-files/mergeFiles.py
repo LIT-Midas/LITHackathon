@@ -23,7 +23,7 @@ def lambda_handler(event, context):
 
     for object_summary in bucket.objects.filter(Prefix="test/"):
         objectKey = object_summary.key
-        response = requests.post('https://26b8cf35526e.ngrok.io/documents/key', data={
+        response = requests.post('https://8169f98443ef.ngrok.io/documents/key', data={
             'key': objectKey
         })
         docDetails[objectKey] = response.json()['data']

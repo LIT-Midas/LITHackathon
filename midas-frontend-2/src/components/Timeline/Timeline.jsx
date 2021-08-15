@@ -45,7 +45,7 @@ export default function MidasTimeline() {
   }, []);
 
   const fetchEvents = async () => {
-    selectedCase && await axios.get(`https://26b8cf35526e.ngrok.io/tasks/claim/${selectedCase}`).then((result) => {
+    selectedCase && await axios.get(`https://8169f98443ef.ngrok.io/tasks/claim/${selectedCase}`).then((result) => {
       console.log(result.data);
       setTimelineEvents(result.data);
       setLoading(false);

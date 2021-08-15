@@ -14,7 +14,7 @@ const ClaimFileDownload = () => {
 
   const fetchDocuments = async () => {
     if (selectedCase != null && selectedCase != '') {
-      await axios.get(`https://26b8cf35526e.ngrok.io/documents/claim/${selectedCase}`, {
+      await axios.get(`https://8169f98443ef.ngrok.io/documents/claim/${selectedCase}`, {
         headers: {
           'Content-Type': 'application/json',
         }

@@ -26,7 +26,7 @@ const UploadFiles = (props) => {
     formData.append("claim_id", selectedCase);
     formData.append("uploader_name", name);
     formData.append("persona", persona);
-    await axios.post('https://26b8cf35526e.ngrok.io/documents', formData, {
+    await axios.post('https://8169f98443ef.ngrok.io/documents', formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }

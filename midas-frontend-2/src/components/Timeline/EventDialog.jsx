@@ -68,7 +68,7 @@ export default function EventDialog(props) {
       "type": type,
       "start_date": eventDate,
     }
-    await axios.post('https://26b8cf35526e.ngrok.io/tasks', data, {
+    await axios.post('https://8169f98443ef.ngrok.io/tasks', data, {
       headers: {
         'Content-Type': 'application/json',
       }
