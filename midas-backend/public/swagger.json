@@ -201,6 +201,12 @@
 					"claim": {
 						"$ref": "#/components/schemas/Claim"
 					},
+					"documents": {
+						"items": {
+							"$ref": "#/components/schemas/Document"
+						},
+						"type": "array"
+					},
 					"created_at": {
 						"type": "string",
 						"format": "date-time"
@@ -217,6 +223,93 @@
 					"access_code",
 					"claim_id",
 					"claim",
+					"documents",
+					"created_at",
+					"updated_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRecordOfAny": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {}
+			},
+			"Document": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"uploader_name": {
+						"type": "string"
+					},
+					"upload_url": {
+						"type": "string"
+					},
+					"claim_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"claim": {
+						"$ref": "#/components/schemas/Claim"
+					},
+					"receivers": {
+						"items": {
+							"$ref": "#/components/schemas/Receiver"
+						},
+						"type": "array"
+					},
+					"type": {
+						"type": "string"
+					},
+					"job_id": {
+						"type": "string"
+					},
+					"form_data": {
+						"items": {
+							"$ref": "#/components/schemas/IRecordOfAny"
+						},
+						"type": "array"
+					},
+					"raw": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"title",
+					"status",
+					"uploader_name",
+					"upload_url",
+					"claim_id",
+					"claim",
+					"receivers",
+					"type",
+					"job_id",
+					"form_data",
+					"raw",
 					"created_at",
 					"updated_at"
 				],
@@ -276,85 +369,6 @@
 					"deadline_date",
 					"details",
 					"type",
-					"created_at",
-					"updated_at"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IRecordOfAny": {
-				"properties": {},
-				"type": "object",
-				"additionalProperties": {}
-			},
-			"Document": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"title": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string"
-					},
-					"uploader_name": {
-						"type": "string"
-					},
-					"upload_url": {
-						"type": "string"
-					},
-					"claim_id": {
-						"type": "number",
-						"format": "double"
-					},
-					"claim": {
-						"$ref": "#/components/schemas/Claim"
-					},
-					"type": {
-						"type": "string"
-					},
-					"job_id": {
-						"type": "string"
-					},
-					"form_data": {
-						"items": {
-							"$ref": "#/components/schemas/IRecordOfAny"
-						},
-						"type": "array"
-					},
-					"raw": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"created_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updated_at": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"title",
-					"status",
-					"uploader_name",
-					"upload_url",
-					"claim_id",
-					"claim",
-					"type",
-					"job_id",
-					"form_data",
-					"raw",
 					"created_at",
 					"updated_at"
 				],
@@ -501,18 +515,24 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IDocumentPayload": {
+			"IDocumentUpdatePayload": {
 				"properties": {
+					"title": {
+						"type": "string"
+					},
 					"uploader_name": {
 						"type": "string"
 					},
+					"form_data": {},
 					"claim_id": {
 						"type": "number",
 						"format": "double"
 					}
 				},
 				"required": [
+					"title",
 					"uploader_name",
+					"form_data",
 					"claim_id"
 				],
 				"type": "object",
@@ -1500,7 +1520,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IDocumentPayload"
+								"$ref": "#/components/schemas/IDocumentUpdatePayload"
 							}
 						}
 					}
@@ -1573,6 +1593,56 @@
 						}
 					}
 				]
+			}
+		},
+		"/documents/receiver/{id}": {
+			"post": {
+				"operationId": "AddReceiver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Document"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Document"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"receiver_id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"receiver_id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/documents/key": {
@@ -2055,6 +2125,56 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/IReceiverVerifyPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/receivers/document/{id}": {
+			"post": {
+				"operationId": "AddDocument",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Receiver"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Receiver"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"document_id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"document_id"
+								],
+								"type": "object"
 							}
 						}
 					}

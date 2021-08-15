@@ -1,8 +1,8 @@
 import { Get, Route, Tags,  Post, Body, Path, Delete } from "tsoa";
 import { DeleteResult } from "typeorm";
-import { Receiver } from '../models'
+import { Document, Receiver } from '../models'
 import password from 'secure-random-password';
-import {getReceivers, createReceiver, IReceiverPayload, getReceiver, updateReceiver, deleteReceiver, IReceiverVerifyPayload, verifyReceiver, getReceiversByClaim} from '../repositories/receiver.repository'
+import {getReceivers, createReceiver, IReceiverPayload, getReceiver, updateReceiver, deleteReceiver, IReceiverVerifyPayload, verifyReceiver, getReceiversByClaim, addDocument} from '../repositories/receiver.repository'
 
 @Route("receivers")
 @Tags("Receiver")
@@ -36,6 +36,11 @@ export default class ReceiverController {
   @Post("/verify")
   public async verifyReceiver(@Body() body: IReceiverVerifyPayload): Promise<Receiver | null> {
     return verifyReceiver(body.email, body.access_code)
+  }
+
+  @Post("/document/:id")
+  public async addDocument(@Path() id: string, @Body() body: {document_id: number}): Promise<Receiver> {
+    return addDocument(Number(id), body.document_id)
   }
 
   @Delete("/:id")

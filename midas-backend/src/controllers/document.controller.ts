@@ -1,8 +1,8 @@
 import { Get, Route, Tags,  Post, Body, Path, Delete, Request } from "tsoa";
 import { DeleteResult } from "typeorm";
-import {Document} from '../models'
+import {Document, Receiver} from '../models'
 import { IRecordOfAny } from "../models/document";
-import { getDocuments, IDocumentPayload, createDocument, getDocument, getClaimDocuments, updateDocument, deleteDocument, downloadDocument, updateDocumentFormData, IS3Payload, createS3Document, generateDocumentPresignedUrl, generateMultiplePresignedUrl, getDocumentByKey } from "../repositories/document.repository";
+import { getDocuments, IDocumentPayload, createDocument, getDocument, getClaimDocuments, updateDocument, deleteDocument, downloadDocument, updateDocumentFormData, IS3Payload, createS3Document, generateDocumentPresignedUrl, generateMultiplePresignedUrl, getDocumentByKey, addReceiver, IDocumentUpdatePayload } from "../repositories/document.repository";
 
 export interface IS3FormDataPayload {
   form_data: IRecordOfAny[];
@@ -23,8 +23,13 @@ export default class DocumentController {
   }
 
   @Post("/:id")
-  public async updateDocument(@Path() id: string, @Body() body: IDocumentPayload): Promise<Document> {
+  public async updateDocument(@Path() id: string, @Body() body: IDocumentUpdatePayload): Promise<Document> {
     return updateDocument(Number(id), body)
+  }
+
+  @Post("/receiver/:id")
+  public async addReceiver(@Path() id: string, @Body() body: {receiver_id: number}): Promise<Document> {
+    return addReceiver(Number(id), body.receiver_id)
   }
 
   @Get("/:id")

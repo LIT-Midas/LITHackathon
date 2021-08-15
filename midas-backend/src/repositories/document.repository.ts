@@ -1,9 +1,16 @@
-import {DeleteResult, getRepository} from "typeorm";
-import { Document } from '../models'
+import {DeleteResult, getRepository, getConnection} from "typeorm";
+import { Document, Receiver } from '../models'
 import { S3 } from 'aws-sdk';
 
 export interface IDocumentPayload {
   uploader_name: string;
+  claim_id: number;
+}
+
+export interface IDocumentUpdatePayload {
+  title: string;
+  uploader_name: string;
+  form_data: any;
   claim_id: number;
 }
 
@@ -126,7 +133,7 @@ export const getDocumentByKey  = async (key: string) :Promise<Document | null> =
   return document
 }
 
-export const updateDocument  = async (id: number, payload: IDocumentPayload) :Promise<Document> => {
+export const updateDocument  = async (id: number, payload: IDocumentUpdatePayload) :Promise<Document> => {
   const documentRepository = getRepository(Document);
   const document = await documentRepository.findOne({id: id})
   return documentRepository.save({
@@ -142,6 +149,19 @@ export const updateDocumentFormData = async (form_data: any, job_id: string): Pr
     ...document,
     form_data: form_data,
   })
+}
+
+export const addReceiver = async (id: number, receiver_id: number): Promise<Document> => {
+  const documentRepository = getRepository(Document);
+  const receiverRepository = getRepository(Receiver);
+  const document = await documentRepository.findOne({ id: id })
+  const receiver = await receiverRepository.findOne({ id: receiver_id })
+  await getConnection()
+    .createQueryBuilder()
+    .relation(Document, "receivers")
+    .of(document)
+    .add(receiver);
+  return document!
 }
 
 export const deleteDocument  = async (id: number) :Promise<DeleteResult | null> => {

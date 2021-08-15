@@ -36,6 +36,13 @@ router.post("/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.post("/document/:id", async (req, res) => {
+  const controller = new ReceiverController();
+  const response = await controller.addDocument(req.params.id, req.body);
+  if (!response) res.status(404).send({message: "No documents found"})
+  return res.send(response);
+});
+
 router.post("/verify", async (req, res) => {
   const controller = new ReceiverController();
   const response = await controller.verifyReceiver(req.body);

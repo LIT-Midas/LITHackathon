@@ -1,4 +1,4 @@
-import {DeleteResult, getRepository} from "typeorm";
+import {DeleteResult, getConnection, getRepository} from "typeorm";
 import { Document, Receiver } from '../models'
 
 export interface IReceiverPayload {
@@ -62,4 +62,17 @@ export const getReceiversByClaim = async (id: number): Promise<Receiver[] | null
   const receivers = await receiverRepository.find({ where: { claim_id: id }})
   if (!receivers) return null
   return receivers
+}
+
+export const addDocument = async (id: number, document_id: number): Promise<Receiver> => {
+  const receiverRepository = getRepository(Receiver);
+  const documentRepository = getRepository(Document);
+  const receiver = await receiverRepository.findOne({ id: id })
+  const document = await documentRepository.findOne({ id: document_id })
+  await getConnection()
+    .createQueryBuilder()
+    .relation(Receiver, "documents")
+    .of(receiver)
+    .add(document);
+  return receiver!
 }

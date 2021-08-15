@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToMany, JoinTable} from "typeorm";
 import { User } from "./user";
 import { Client } from "./client";
 import { Claim } from "./claim";
@@ -48,6 +48,10 @@ export class Document {
     @ManyToOne(_type => Claim, (claim: Claim) => claim.documents, { eager: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: "claim_id" })
     claim!: Claim;
+  
+    @ManyToMany(_type => Receiver, (receiver: Receiver) => receiver.documents)
+    @JoinTable()
+    receivers!: Receiver[];
 
     @Column({
       type: 'text',

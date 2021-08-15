@@ -54,6 +54,13 @@ router.get("/claim/:id", async (req, res) => {
   return res.send(response);
 });
 
+router.post("/receiver/:id", async (req, res) => {
+  const controller = new DocumentController();
+  const response = await controller.addReceiver(req.params.id, req.body);
+  if (!response) res.status(404).send({message: "No documents found"})
+  return res.send(response);
+});
+
 router.post("/key", async (req, res) => {
   const controller = new DocumentController();
   const response = await controller.getDocumentByKey(req.body);

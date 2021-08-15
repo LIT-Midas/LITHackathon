@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, UpdateDateColumn, ManyToMany, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, UpdateDateColumn, ManyToMany, ManyToOne, JoinTable} from "typeorm";
 import { Claim } from "./claim";
+import { Document } from "./document";
 
 /**
  * @tsoaModel
@@ -24,6 +25,10 @@ export class Receiver {
   @ManyToOne(_type => Claim, (claim: Claim) => claim.receivers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: "claim_id" })
   claim!: Claim;
+
+  @ManyToMany(_type => Document, (document: Document) => document.receivers, {eager: true})
+  @JoinTable()
+  documents!: Document[];
   
   @CreateDateColumn()
   created_at!: Date;
