@@ -45,7 +45,7 @@ const Claim = (props) => {
   return (
     <>
       <div className="main-content" ref={mainContent}>
-        <ClaimsNavBar header={'Upload Documents'} />
+        <ClaimsNavBar header={'Document Explorer'} />
         <div className="header bg-gradient-info pt-4 pb-2">
           {/* Page content */}
           <Container className="py-5">

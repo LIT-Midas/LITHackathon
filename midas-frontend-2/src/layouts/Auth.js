@@ -67,7 +67,7 @@ const Auth = (props) => {
             <div className="header-body text-center mb-1">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-                  <h1 className="text-white">Welcome to Docu-Mate!</h1>
+                  <h1 className="text-white">Welcome to DocuMate!</h1>
                   <p className="text-lead text-light">
                     Your personal AI assistant for case management
                   </p>

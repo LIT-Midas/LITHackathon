@@ -2,33 +2,50 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import Loader from 'react-loader-spinner';
+import DateFnsUtils from '@date-io/date-fns';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Row, Col, Card, CardHeader, CardText, CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 
-export default function DocumentDetail() {
+export default function DocumentDetail(props) {
   const [documentTitle, setDocumentTitle] = useState('Title Of Document');
   const [uploadedBy, setUploadedBy] = useState('Uploader Name');
   const [uploadDate, setUploadDate] = useState('Upload Date');
   const [keyInfo, setKeyInfo] = useState({});
+  const [expense, setExpense] = useState(null);
+  const [date, setDate] = useState(null);
+  const [companyName, setCompanyName] = useState(null);
+  const [serialNum, setSerialNum] = useState(null);
   const [documentType, setDocumentType] = useState(null);
   const [documentLink, setDocumentLink] = useState('');
   const [renderDocument, setRenderDocument] = useState(<Loader type='Puff' color='#00BFFF' height={100} width={100} />);
 
+  const { selectedFileId } = props;
   useEffect(async () => {
     let fileData;
-    await axios.post('https://run.mocky.io/v3/2647a40c-7d65-4987-988f-709c349d6962').then((result) => {
-      fileData = result.data.data;
+    await axios.get(`https://26b8cf35526e.ngrok.io/documents/${selectedFileId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then((result) => {
+      console.log(result);
+      fileData = result.data;
     });
-    console.log(fileData);
+
     if (fileData) {
       setDocumentTitle(fileData.file_name);
       setUploadedBy(fileData.uploaded_by);
       setUploadDate(new Date(fileData.upload_date));
       setKeyInfo(fileData.key_info);
       setDocumentType(fileData.file_type);
-      const fileLink = fileData.link;
+      // setExpense(keyInfo.expense);
+      // setDate(keyInfo.date);
+      // setCompanyName(keyInfo.company_name);
+      // setSerialNum(keyInfo.serial_number);
+      // const fileLink = fileData.link;
+      const fileLink = await retrieveSignedUrl();
       switch (fileData.file_type) {
         case 'img':
-          setRenderDocument(<img className='img-fluid' src={fileLink} alt='' />);
+          fileLink && setRenderDocument(<img className='img-fluid' src={''} alt='' />);
           break;
         default:
           break;
@@ -43,6 +60,28 @@ export default function DocumentDetail() {
     // };
   }, []);
 
+  const retrieveSignedUrl = async () => {
+    console.log(selectedFileId);
+    selectedFileId && await axios.get(`https://26b8cf35526e.ngrok.io/documents/presignedUrl/${selectedFileId}`, {
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': 'attachment',
+      }
+    }).then((request) => {
+      console.log(request);
+      return (request.data);
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+  const updateDocument = async () => {
+    const data = {
+
+    }
+    await axios.post(`https://26b8cf35526e.ngrok.io/documents/${selectedFileId}`,)
+  }
+
   return (
     <Card className='shadow'>
       <CardHeader className='border-0'>
@@ -53,12 +92,12 @@ export default function DocumentDetail() {
           <Col>{renderDocument}</Col>
           <Col>
             <Row>
-              <h2>Document Name</h2>
+              <h4>Document Name</h4>
             </Row>
             <Row>
               <TextField id='standard-basic' value={documentTitle} onChange={(event) => setDocumentTitle(event.target.value)} />
             </Row>
-            <Row>
+            <Row className="pt-4">
               <Col>
                 <Row>
                   <h4>Uploaded By</h4>
@@ -72,11 +111,25 @@ export default function DocumentDetail() {
                   <h4>Uploaded On</h4>
                 </Row>
                 <Row>
-                  <TextField id='standard-basic' value={uploadDate} />
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                    <KeyboardDatePicker
+                      autoOk='true'
+                      variant='inline'
+                      format='dd MMM yyyy'
+                      margin='normal'
+                      value={uploadDate}
+                      onChange={(newDate) => {
+                        setUploadDate(newDate);
+                      }}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
                 </Row>
               </Col>
             </Row>
-            <Row>
+            <Row className="pt-4">
               <h4>Extracted Key Info</h4>
             </Row>
             <Row>
@@ -88,23 +141,42 @@ export default function DocumentDetail() {
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(keyInfo).map(([key, value]) => {
-                    return (
-                      <tr>
-                        <td>{key}</td>
-                        <td>{value}</td>
-                      </tr>
-                    );
-                  })}
+                  <tr>
+                    <td>{'expense'}</td>
+                    <td><TextField id='standard-basic' value={expense} onChange={(e) => { setExpense(e.target.value) }} /></td>
+                  </tr>
+                  <tr>
+                    <td>{'date'}</td>
+                    <td>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                        <KeyboardDatePicker
+                          autoOk='true'
+                          variant='inline'
+                          format='dd MMM yyyy'
+                          margin='normal'
+                          value={date}
+                          onChange={(newDate) => {
+                            setDate(newDate);
+                          }}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{'company_name'}</td>
+                    <td><TextField id='standard-basic' value={companyName} onChange={(e) => { setCompanyName(e.target.value) }} /></td>
+                  </tr>
+                  <tr>
+                    <td>{'serial_number'}</td>
+                    <td><TextField id='standard-basic' value={serialNum} onChange={(e) => { setSerialNum(e.target.value) }} /></td>
+                  </tr>
                 </tbody>
               </Table>
             </Row>
-            <CardTitle tag='h5'>Card title</CardTitle>
-            <CardSubtitle tag='h6' className='mb-2 text-muted'>
-              Card subtitle
-            </CardSubtitle>
-            <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-            <button className='btn btn-primary'>Update</button>
+            <button className='btn btn-primary' onClick={updateDocument}>Update</button>
           </Col>
         </Row>
       </CardBody>

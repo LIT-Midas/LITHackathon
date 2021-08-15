@@ -8,10 +8,11 @@ import {
   InputGroupText, Row
 } from "reactstrap";
 import { AccountContext } from "../../services/account";
+import { CaseContext } from '../../services/case';
 
 const Login = (props) => {
   const { validUser, setUserEmail, setValidUser, setUsername, setName, setUserId, setPersona } = useContext(AccountContext);
-  const [caseId, setCaseId] = useState(null);
+  const { selectedCase, setSelectedCase } = useContext(CaseContext);
   const [method, setMethod] = useState(null);
   const location = useLocation();
   const username = useRef(null);
@@ -24,7 +25,7 @@ const Login = (props) => {
       elements = elements.filter((x) => { return (x != null && x != '') })
       if (elements.length == 2) {
         setMethod(elements[0]);
-        setCaseId(elements[1]);
+        setSelectedCase(elements[1]);
       }
     }
   }, [location]);
@@ -34,7 +35,7 @@ const Login = (props) => {
       .then(async (sess) => {
         await fetchUserId(email);
         setValidUser(true);
-        setPersona('user');
+        setPersona('users');
       }).catch(() => {
         setValidUser(false);
         setUsername('');
@@ -56,22 +57,22 @@ const Login = (props) => {
   }
 
   const signInToApi = async () => {
-    // TODO: Validate Email (userName) and Access Code (password)
     const data = {
       "email": username.current,
       "access_code": password.current,
     }
-    await axios.post('https://26b8cf35526e.ngrok.io/clients/verify', data, {
+
+    method && await axios.post(`https://26b8cf35526e.ngrok.io/${method === 'upload' ? 'clients' : 'receivers'}/verify`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
     }).then((request) => {
       console.log(request.data);
       if (request.status == 200) {
-        setUserEmail(username.current);
+        setUserEmail(request.data.email);
         setValidUser(true);
-        setUserId(1);
-        setPersona('client');
+        setUserId(request.data.id);
+        setPersona(method === 'upload' ? 'clients' : 'receivers');
       }
     }).catch((error) => {
       console.error('Error validating request: ' + error);
@@ -238,18 +239,75 @@ const Login = (props) => {
     );
   }
 
+  const DownloadLogin = () => {
+    return (
+      <>
+        <Col lg="5" md="7">
+          <Card className="bg-secondary shadow border-0">
+            <CardBody className="px-lg-5 py-lg-5">
+              <div className="text-muted text-center mt-1 mb-3">
+                <small>Sign in with the provided access code to download the documents from the case</small>
+              </div>
+              <Form role="form">
+                <FormGroup className="mb-3">
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-email-83" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="Email"
+                      type="email"
+                      autoComplete="new-email"
+                      onChange={(e) => {
+                        username.current = e.target.value;
+                      }}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-lock-circle-open" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="Access Code"
+                      type="text"
+                      autoComplete="new-access-code"
+                      onChange={(e) => {
+                        password.current = e.target.value;
+                      }}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                <div className="text-center">
+                  <Button className="mt-4 mb-1" color="primary" type="button" onClick={signInToApi}>
+                    Sign in
+                  </Button>
+                </div>
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      </>
+    );
+  }
+
   const RenderLoginScreen = () => {
-    if (caseId != null && method == 'upload') {
+    if (selectedCase != null && method == 'upload') {
       return <UploadersLogin />;
-    } else if (caseId != null && method == 'download') {
-      return <Redirect to="/home/receiver" />;
+    } else if (selectedCase != null && method == 'download') {
+      return <DownloadLogin />;
     } else {
       return <UserLogin />
     }
   }
 
   const RedirectValidUsers = () => {
-    if (caseId != null && method != null) {
+    if (selectedCase != null && method != null) {
       const path = `/claim/${method}`;
       return <Redirect to={path} />;
     } else {

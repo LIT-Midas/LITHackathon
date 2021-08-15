@@ -41,6 +41,7 @@ import './Repository.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FileDownloadTable from '../../components/FileDownload/FileDownloadTable.component.jsx';
+import DocumentDetail from '../../components/Document/DocumentDetails.jsx';
 
 const Repository = () => {
 

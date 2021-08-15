@@ -181,7 +181,7 @@ export default function EventDialog(props) {
                 <KeyboardDatePicker
                   autoOk='true'
                   variant='inline'
-                  format='MM/dd/yyyy'
+                  format='dd MMM yyyy'
                   margin='normal'
                   value={eventDate}
                   onChange={(date) => {

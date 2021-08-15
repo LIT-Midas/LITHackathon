@@ -1,20 +1,24 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
 import moment from 'moment';
 import axios from 'axios';
+import DocumentDetail from '../Document/DocumentDetails';
 
 export default function FileDownloadTable(props) {
   const { data } = props;
-  data.map(d => {
+  data?.map(d => {
     d.uploader_name = d.uploader_name ?? 'Unknown';
     d.status = d.status ?? 'Not processed';
-    // console.log(moment(d.created_at).format('DD MM YYYY'))
     d.created_at = moment(d.created_at, 'YYYY-MM-DDTHH:mm:ssZ').format('DD/MM/YYYY HH:mm');
   });
 
-  const editDocument = (id) => {
+  const [fileSelected, setFileSelected] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState(null);
 
+  const editDocument = (id) => {
+    setSelectedFileId(id);
+    setFileSelected(true);
   }
 
   const downloadFile = async (id) => {
@@ -47,7 +51,7 @@ export default function FileDownloadTable(props) {
               color="primary-info"
               size="small"
               style={{ marginLeft: 16 }}
-              onClick={() => { console.log(params.row.id) }}
+              onClick={() => { editDocument(params.row.id) }}
             >
               Edit
             </Button>
@@ -72,12 +76,21 @@ export default function FileDownloadTable(props) {
     ], []);
   return (
     <div style={{ height: 530, width: '100%' }}>
-      <DataGrid
-        rows={data}
-        columns={columns}
-        pageSize={8}
-        isRowSelectable={false}
-      />
+      {
+        !fileSelected ?
+          <DataGrid
+            rows={data}
+            columns={columns}
+            pageSize={8}
+            isRowSelectable={false}
+            checkboxSelection
+          /> :
+          <DocumentDetail
+            setFileSelected={setFileSelected}
+            setSelectedFileId={setSelectedFileId}
+            selectedFileId={selectedFileId}
+          />
+      }
     </div>
   );
 }
