@@ -22,7 +22,7 @@ export default function DocumentDetail(props) {
   const { selectedFileId, setSelectedFieldId, setFileSelected } = props;
   useEffect(async () => {
     let fileData;
-    await axios.get(`https://8169f98443ef.ngrok.io/documents/${selectedFileId}`, {
+    await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/${selectedFileId}`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -54,7 +54,7 @@ export default function DocumentDetail(props) {
 
   const retrieveSignedUrl = async () => {
     console.log(selectedFileId);
-    selectedFileId && await axios.get(`https://8169f98443ef.ngrok.io/documents/presignedUrl/${selectedFileId}`, {
+    selectedFileId && await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/presignedUrl/${selectedFileId}`, {
       headers: {
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': 'attachment',
@@ -77,7 +77,7 @@ export default function DocumentDetail(props) {
     const data = {
       form_date: newFormData
     }
-    selectedFileId && await axios.post(`https://8169f98443ef.ngrok.io/documents/${selectedFileId}`, data).then(res => {
+    selectedFileId && await axios.post(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/${selectedFileId}`, data).then(res => {
       console.log("success", res)
       setFileSelected(false);
       setSelectedFieldId(null);

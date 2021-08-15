@@ -62,7 +62,7 @@ const Repository = () => {
       "email": recipientEmail.current,
       "claim_id": selectedCase,
     }
-    await axios.post('https://8169f98443ef.ngrok.io/clients', paramData, {
+    await axios.post('http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/clients', paramData, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -79,7 +79,7 @@ const Repository = () => {
 
   const fetchDocuments = async () => {
     if (selectedCase != null && selectedCase != '') {
-      await axios.get(`https://8169f98443ef.ngrok.io/documents/claim/${selectedCase}`, {
+      await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/claim/${selectedCase}`, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -94,7 +94,7 @@ const Repository = () => {
 
   const fetchProcessedDocuments = async () => {
     if (selectedCase != null && selectedCase != '') {
-      await axios.get(`https://8169f98443ef.ngrok.io/documents/merged/merged_files`, {
+      await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/merged/merged_files`, {
         headers: {
           'Content-Type': 'application/json',
         }
