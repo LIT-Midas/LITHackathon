@@ -49,13 +49,13 @@ var routes = [
     component: Repository,
     layout: '/admin',
   },
-  {
-    path: '/icons',
-    name: 'Share Documents',
-    icon: 'ni ni-send text-blue',
-    component: Icons,
-    layout: '/admin',
-  },
+  // {
+  //   path: '/icons',
+  //   name: 'Share Documents',
+  //   icon: 'ni ni-send text-blue',
+  //   component: Icons,
+  //   layout: '/admin',
+  // },
   {
     path: '/share-document',
     name: 'Share Documents',

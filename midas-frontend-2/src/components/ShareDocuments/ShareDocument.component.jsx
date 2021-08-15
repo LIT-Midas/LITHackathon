@@ -25,6 +25,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import FileDownloadTable from "../FileDownload/FileDownloadTable.component";
+import { Divider } from "@material-ui/core";
 
 const ShareDocument = () => {
 
@@ -84,28 +85,24 @@ const ShareDocument = () => {
     ];
 
     sharers.map((sharer, index) => {
+      const documents = sharer['documents'];
       gridItems.push(<Grid item xs={12} s={6} md={4} lg={3} spacing={3} className="px-2 py-2">
         <Card className={classes.root}>
           <CardContent className={'pb-0'}>
             <Typography variant="h5" component="h2">
               {sharer.name}
             </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-            </Typography>
-            <Typography variant="body2" component="p">
-              {sharer.description}
-            </Typography>
-            <Typography variant="body2" component="p" color="textSecondary">
-              Last Updated: {new Date(sharer.updated_at).toDateString()}
-            </Typography>
-            <Typography variant="body2" component="p" className={'pt-1'} color="textSecondary">
-              {sharer.contact_number}
-            </Typography>
+            <br />
+            Shared Documents:
+            <Divider className={'mb-2'} />
+            {(
+              documents.map((document) => {
+                return (
+                  <h5>{document.name}</h5>
+                );
+              })
+            )}
           </CardContent>
-          <CardActions className={'pt-0'}>
-            <Button size="small" onClick={() => {
-            }}>Select Case</Button>
-          </CardActions>
         </Card>
       </Grid>
       )
@@ -142,7 +139,7 @@ const ShareDocument = () => {
       .then((request) => {
         console.log(request);
         if (request.status === 200) {
-          setSharers([]);
+          setSharers(request.data);
         }
       })
       .catch((error) => {
@@ -206,7 +203,7 @@ const ShareDocument = () => {
           </Col>
         </Row>
         <Row >
-          <div className="col">
+          <div className="col" style={{ height: 530, width: '100%' }}>
             <ReceiverGrid />
           </div>
         </Row>

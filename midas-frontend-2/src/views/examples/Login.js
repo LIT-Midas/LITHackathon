@@ -61,22 +61,22 @@ const Login = (props) => {
       "email": username.current,
       "access_code": password.current,
     }
-
-    method && await axios.post(`https://26b8cf35526e.ngrok.io/${method === 'upload' ? 'clients' : 'receivers'}/verify`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }).then((request) => {
-      console.log(request.data);
-      if (request.status == 200) {
-        setUserEmail(request.data.email);
-        setValidUser(true);
-        setUserId(request.data.id);
-        setPersona(method === 'upload' ? 'clients' : 'receivers');
-      }
-    }).catch((error) => {
-      console.error('Error validating request: ' + error);
-    });
+    setValidUser(true);
+    // method && await axios.post(`https://26b8cf35526e.ngrok.io/${method === 'upload' ? 'clients' : 'receivers'}/verify`, data, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
+    // }).then((request) => {
+    //   console.log(request.data);
+    //   if (request.status == 200) {
+    //     setUserEmail(request.data.email);
+    //     setValidUser(true);
+    //     setUserId(request.data.id);
+    //     setPersona(method === 'upload' ? 'clients' : 'receivers');
+    //   }
+    // }).catch((error) => {
+    //   console.error('Error validating request: ' + error);
+    // });
   }
 
   const fetchUserId = async (email) => {

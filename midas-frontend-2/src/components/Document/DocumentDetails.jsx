@@ -37,19 +37,11 @@ export default function DocumentDetail(props) {
       setUploadDate(new Date(fileData.upload_date));
       setKeyInfo(fileData.key_info);
       setDocumentType(fileData.file_type);
-      // setExpense(keyInfo.expense);
-      // setDate(keyInfo.date);
-      // setCompanyName(keyInfo.company_name);
-      // setSerialNum(keyInfo.serial_number);
-      // const fileLink = fileData.link;
-      const fileLink = await retrieveSignedUrl();
-      switch (fileData.file_type) {
-        case 'img':
-          fileLink && setRenderDocument(<img className='img-fluid' src={''} alt='' />);
-          break;
-        default:
-          break;
-      }
+      setExpense(keyInfo?.expense);
+      setDate(keyInfo?.date);
+      setCompanyName(keyInfo?.company_name);
+      setSerialNum(keyInfo?.serial_number);
+      setRenderDocument(<img className='img-fluid' src={"https://i.ibb.co/q9fs359/Guardian-Health.jpg"} alt='' />);
     }
     // const config = { responseType: 'blob' };
     // axios.get(blobUrl, config).then((response) => {
