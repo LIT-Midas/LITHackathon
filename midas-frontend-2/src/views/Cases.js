@@ -24,7 +24,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Cases = () => {
-  const baseURL = 'https://8169f98443ef.ngrok.io';
+  const baseURL = 'https://localhost:8000';
   const { userId } = useContext(AccountContext);
   const { setSelectedCase, setCaseName } = useContext(CaseContext);
   const [casesData, setCasesData] = useState([]);

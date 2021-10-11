@@ -26,7 +26,7 @@ const UploadFiles = (props) => {
     formData.append("claim_id", selectedCase);
     formData.append("uploader_name", name);
     formData.append("persona", persona);
-    await axios.post('http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents', formData, {
+    await axios.post('http://localhost:8000/documents', formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }

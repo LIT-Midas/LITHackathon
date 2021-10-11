@@ -23,7 +23,7 @@ def lambda_handler(event, context):
 
     for object_summary in bucket.objects.filter(Prefix="test/"):
         objectKey = object_summary.key
-        response = requests.post('http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/key', data={
+        response = requests.post('http://localhost:8000/documents/key', data={
             'key': objectKey
         })
         docDetails[objectKey] = response.json()['data']

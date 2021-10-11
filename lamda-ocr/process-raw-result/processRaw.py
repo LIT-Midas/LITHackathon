@@ -117,7 +117,7 @@ def lambda_handler(event, context):
     print(result)
     print(extractedKeyPairs)
 
-    r = requests.post('http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/formdata', data={
+    r = requests.post('http://localhost:8000/documents/formdata', data={
         'job_id': pdfTextExtractionJobId,
         'form_data': [extractedKeyPairs]
     })

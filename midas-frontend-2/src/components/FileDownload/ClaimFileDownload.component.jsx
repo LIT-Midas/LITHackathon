@@ -14,7 +14,7 @@ const ClaimFileDownload = () => {
 
   const fetchDocuments = async () => {
     if (selectedCase != null && selectedCase != '') {
-      await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/claim/${selectedCase}`, {
+      await axios.get(`http://localhost:8000/documents/claim/${selectedCase}`, {
         headers: {
           'Content-Type': 'application/json',
         }

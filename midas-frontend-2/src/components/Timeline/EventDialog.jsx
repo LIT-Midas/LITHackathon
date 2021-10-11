@@ -68,7 +68,7 @@ export default function EventDialog(props) {
       "type": type,
       "start_date": eventDate,
     }
-    await axios.post('http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/tasks', data, {
+    await axios.post('http://localhost:8000/tasks', data, {
       headers: {
         'Content-Type': 'application/json',
       }

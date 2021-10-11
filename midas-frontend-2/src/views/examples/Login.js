@@ -62,7 +62,7 @@ const Login = (props) => {
       "access_code": password.current,
     }
     // setValidUser(true);
-    const path = encodeURI(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/${method === 'upload' ? 'clients' : 'receivers'}/${username.current}`);
+    const path = encodeURI(`http://localhost:8000/${method === 'upload' ? 'clients' : 'receivers'}/${username.current}`);
     console.log(path);
     method && await axios.get(path, {
       headers: {
@@ -82,7 +82,7 @@ const Login = (props) => {
   }
 
   const fetchUserId = async (email) => {
-    email && await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/users/email/${email}`, {
+    email && await axios.get(`http://localhost:8000/users/email/${email}`, {
       headers: {
         'Content-Type': 'application/json',
       }

@@ -74,7 +74,7 @@ def processPDF(bucket, key):
         })
 
     print(requestData)
-    r = requests.post('http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/bootstrap', data={
+    r = requests.post('http://localhost:8000/documents/bootstrap', data={
         "parent": key,
         "type": 'application/pdf',
         "data": requestData

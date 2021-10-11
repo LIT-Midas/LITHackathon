@@ -122,7 +122,7 @@ const ShareDocument = () => {
   }
 
   const retrieveClaimDocuments = async () => {
-    selectedCase && await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/claim/${selectedCase}`, {
+    selectedCase && await axios.get(`http://localhost:8000/documents/claim/${selectedCase}`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -135,7 +135,7 @@ const ShareDocument = () => {
   }
 
   const retrieveClaimSharers = async () => {
-    selectedCase && await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/receivers/claim/${selectedCase}`)
+    selectedCase && await axios.get(`http://localhost:8000/receivers/claim/${selectedCase}`)
       .then((request) => {
         console.log(request);
         if (request.status === 200) {

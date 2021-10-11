@@ -13,7 +13,7 @@ export default function FileDownloadTable(props) {
   });
 
   const downloadFile = async (id) => {
-    id && await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/documents/presignedUrl/${id}`, {
+    id && await axios.get(`http://localhost:8000/documents/presignedUrl/${id}`, {
       headers: {
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': 'attachment',

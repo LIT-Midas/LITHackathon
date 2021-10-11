@@ -45,7 +45,7 @@ export default function MidasTimeline() {
   }, []);
 
   const fetchEvents = async () => {
-    selectedCase && await axios.get(`http://node-express-env.eba-ubjpmur8.us-east-2.elasticbeanstalk.com/tasks/claim/${selectedCase}`).then((result) => {
+    selectedCase && await axios.get(`http://localhost:8000/tasks/claim/${selectedCase}`).then((result) => {
       console.log(result.data);
       setTimelineEvents(result.data);
       setLoading(false);
